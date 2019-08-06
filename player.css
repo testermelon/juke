@@ -1,0 +1,75 @@
+body {
+	background-color: #222222; 
+	color:white;
+	font-family: "Verdana", Helvetica, sans-serif;
+}
+
+.items_list {
+	background-color:#333333; 
+	overflow-y:auto; 
+	height:60vh;
+}
+
+
+tr:hover {
+	background-color: black;
+}
+
+.small_button {
+	background-color: #555555;
+	border: none;
+	border-radius: 5px;
+	width: 35px;
+	height: 25px;
+	color: white;
+}
+
+.small_button:hover {
+	background-color: #777777;
+}
+
+.highlight_small_button {
+	background-color: #999999;
+	border: none;
+	border-radius: 5px;
+	width: 35px;
+	height: 25px;
+	color: #333333;
+}
+
+.highlight_small_button:hover {
+	background-color: #AAAAAA;
+}
+.playlist_button {
+	background-color: #333333;
+	border: none;
+	border-radius: 5px;
+	width: 40px;
+	height: 25px;
+	color: white;
+}
+
+.playlist_button:hover {
+	background-color: #777777;
+}
+
+select {
+	background-color: #333333;
+	border: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	border-radius: 5px;
+	width: 35px;
+	height: 25px;
+	color: white;
+}
+
+.item_playing{
+	color: yellow;
+	font-weight: bold;
+}
+
+
+
+

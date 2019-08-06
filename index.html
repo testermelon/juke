@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link type="text/css" rel="stylesheet" href="player.css">
+</head>
+
+<body>
+
+	<script src="player.js"></script>
+
+	<div style="display:grid; grid-gap:5px; grid-template-columns: 1fr 1fr; ">
+		<div style="text-align: center">
+			Browser
+		</div>
+
+		<div style="text-align: center">
+			Playlist
+		</div>
+
+		<div>
+			<button class="playlist_button">Up</button>
+			<button class="playlist_button">&lt&lt</button>
+		</div>
+
+		<div>
+			<button class="playlist_button">New</button>
+			<button class="playlist_button">Clr</button>
+			<button class="playlist_button">Ren</button>
+			<button class="playlist_button">Del</button>
+
+		</div>
+
+		<div>
+			<select style="width:100%">
+				<option>Artists/Aimer</option>
+			</select>
+
+		</div>
+
+		<div>
+			<select style="width:100%">
+				<option>Playlist 1</option>
+			</select>
+		</div>
+
+		<div id="filelist" class="items_list">
+			<table style="width:100%">
+				<tr >
+				<td>
+				<span style="float:left"> 
+					01 Brave Shine.m4a 
+				</span>
+				<span style="float:right">
+					<button class="small_button">&gt</button> 
+					<button class="small_button">+</button> 
+				</span>
+				</tr>
+
+				<tr>
+				<td>
+				<span style="float:left"> 
+					03 Shine Days.mp3
+				</span>
+				<span style="float:right">
+					<button class="small_button">&gt</button> 
+					<button class="small_button">+</button> 
+				</span>
+				</tr>
+
+				<tr>
+				<td>
+				<span style="float:left"> 
+					01 Maria.m4a
+				</span>
+				<span style="float:right">
+					<button class="small_button">&gt</button> 
+					<button class="small_button">+</button> 
+				</span>
+				</tr>
+
+
+			</table>
+		</div>
+
+
+
+		<div id="tracklist" class="items_list">
+			<table style="width:100%">
+				<tr id="track_0">
+				<td>
+				<span id="track_0_name" style="float:left; vertical-align: middle"> 
+					01 Brave Shine.m4a 
+				</span>
+				<span style="float:right">
+					<button class="small_button">&gt</button> 
+					<button class="small_button">x</button>
+				</span>
+				</tr>
+
+				<tr id="track_1">
+				<td>
+				<span id="track_1_name" style="float:left"> 
+					03 Shine Days.mp3
+				</span>
+				<span style="float:right"> 
+					<button class="small_button">&gt</button> 
+					<button class="small_button">x</button> 
+				</span>
+				</tr>
+
+				<tr id="track_2">
+				<td>
+				<span id="track_2_name" style="float:left"> 
+					grandescape.mp3	
+				</span>
+				<span style="float:right">
+					<button class="small_button">&gt</button> 
+					<button class="small_button">x</button> 
+				</span>
+				</tr>
+
+			</table>
+		</div>
+	</div>
+
+
+	<div style="margin:10px">
+		::
+		<span id="elapsed-time-text"> 00:00 </span> 
+			/ 
+		<span id="duration-text"> 00:00 </span>
+		::
+		<span id="track-name-text">Track Name</span>
+	</div>
+
+	<div id="playback-control">
+		<span>
+			<button class="small_button" id="play-button" 
+				onclick=actionPlay() > 
+				&gt 
+			</button>
+
+			<button class="small_button" id="stop-button" 
+				onclick=actionStop() > 
+				[] 
+			</button>
+
+			<button class="small_button" id="prev-button" 
+				onclick=actionPrev() > 
+				&lt&lt 
+			</button>
+
+			<button class="small_button" id="next-button" 
+				onclick=actionNext() > 
+				&gt&gt  
+			</button>
+
+			<button class="small_button" id="shuffle-button"
+				onclick=actionShuffle() > 
+				S
+			</button>
+
+			<button class="small_button" id="repeat-button"
+				onclick=actionRepeat() > 
+				R
+			</button>
+		</span>
+
+		<span >
+			<input id="volume-slider" type="range" 
+				min="0" max="1" step="0.01" defaultValue="0.5" 
+				style="vertical-align:middle" 
+				onchange=volumeChange() >
+			</input>
+		</span>
+	</div>
+	
+
+	<br>
+
+	<input id="seekbar" type="range" value="0"
+		onchange=playerSeek()
+		style="width:98%; vertical-align:middle">
+	</input>
+	
+	<audio id="player" 
+		onplay=playbackPlayed()
+		onended=playbackEnded() 
+		onpause=playbackPaused()
+       		volume="0.5"	
+		>
+	</audio>
+
+
+</body>
+</html>
+
+
