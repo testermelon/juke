@@ -2,15 +2,7 @@
 //State variables for the music player
 //These needs to be prepared and reflected on the html (view) at init time
 let playlist_home = "../firedrives/Gentiana/Music/"
-let playlist = 
-[
-	"Artists/Aimer/Brave Shine/01 Brave Shine.m4a",
-	"Soundtracks/Angel Beats/[iSiscon] Girls Dead Monster - Keep The Beats! (MP3)/03 Shine Days.mp3",
-	"grandescape.mp3",
-//	"Various Artists/Disney Greatest Love Songs (2008)/CD 2/08 - Lea Salonga - Reflection.mp3"
-
-
-]
+let playlist = []
 let shuffle_list = []
 let current_shuffle = 0
 
@@ -185,14 +177,39 @@ function volumeChange() {
 //event handlings
 //These are mostly event handlers, some of them are natural browser events, some of them are artifical events that needs to be triggered manually 
 
-
+//Called on DOM loaded event
 function initPlayer() {
 	playerdom = document.getElementById("player")
 	seekbardom = document.getElementById("seekbar")
 	volumedom = document.getElementById("volume-slider")
+	//to be obtained using AJAX
+	playlist = 
+	[
+		"Artists/Aimer/Brave Shine/01 Brave Shine.m4a",
+		"Soundtracks/Angel Beats/[iSiscon] Girls Dead Monster - Keep The Beats! (MP3)/03 Shine Days.mp3",
+		"grandescape.mp3",
+		"Various Artists/Disney Greatest Love Songs (2008)/CD 2/08 - Lea Salonga - Reflection.mp3"
+	]
+	document.getElementById("tracklist").innerHTML = generatePlaylist()
 	updateCurrentTrack()
 	updateShuffleList()
 }
+
+function generatePlaylist(){
+	let playlist_html = '<table style="width:100%">'
+	let name = ""
+	for (let i=0;i<playlist.length;i++){
+		name = playlist[i].split("/").slice(-1)[0]
+		playlist_html += '<tr id="track_' + i + '">'
+		playlist_html += '<td>'
+		playlist_html += '<span id="track_' + i + '_name" style="float:left; vertical-align: middle">'
+		playlist_html += name
+		playlist_html += '</span> <span style="float:right"> <button class="small_button">&gt</button> <button class="small_button">x</button> </span> </tr>'
+	}
+	playlist_html += '</table>'
+	return playlist_html
+}
+	
 
 function playbackPlayed() {
 	is_playing = true
