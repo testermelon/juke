@@ -183,17 +183,30 @@ function initPlayer() {
 	seekbardom = document.getElementById("seekbar")
 	volumedom = document.getElementById("volume-slider")
 	//to be obtained using AJAX
-	playlist = 
-	[
-		"Artists/Aimer/Brave Shine/01 Brave Shine.m4a",
-		"Soundtracks/Angel Beats/[iSiscon] Girls Dead Monster - Keep The Beats! (MP3)/03 Shine Days.mp3",
-		"grandescape.mp3",
-		"Various Artists/Disney Greatest Love Songs (2008)/CD 2/08 - Lea Salonga - Reflection.mp3"
-	]
-	document.getElementById("tracklist").innerHTML = generatePlaylist()
-	updateCurrentTrack()
-	updateShuffleList()
+//	playlist = 
+//	[
+//		"Artists/Aimer/Brave Shine/01 Brave Shine.m4a",
+//		"Soundtracks/Angel Beats/[iSiscon] Girls Dead Monster - Keep The Beats! (MP3)/03 Shine Days.mp3",
+//		"grandescape.mp3",
+//		"Various Artists/Disney Greatest Love Songs (2008)/CD 2/08 - Lea Salonga - Reflection.mp3"
+//	]
+	obtainPlaylist("playlist1.pl")
 }
+
+function obtainPlaylist(name) {
+	let xhttp = new XMLHttpRequest()
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			playlist = this.responseText.split(",");
+			document.getElementById("tracklist").innerHTML = generatePlaylist()
+			updateCurrentTrack()
+			updateShuffleList()
+		}
+	}
+	xhttp.open("GET",name,true)
+	xhttp.send()
+}
+
 
 function generatePlaylist(){
 	let playlist_html = '<table style="width:100%">'
