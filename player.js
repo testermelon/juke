@@ -43,65 +43,108 @@ function actionStop(){
 }
 
 function actionNext(){
-	if(repeat == 2)
+
+	//determine the next track based on shuffle and repeat state
+	
+	if(repeat == 2){
+		//do nothing in repeat one
 		return
-
-	if (!shuffle){
-		if (current_track < playlist.length - 1 ){
-			current_track += 1
-		}
-		else{
-			if (repeat == 0) return
-			else current_track = 0
-		}
-	}
-	else{
-		if (current_shuffle < shuffle_list.length - 1){
-			current_shuffle += 1
-		}
-		else{
-			current_shuffle = 0
-		}
-		current_track = shuffle_list[current_shuffle]
-	}
-
-	if (is_playing){
-		updateCurrentTrack()
-		playerdom.play()
 	}
 	else
-		updateCurrentTrack()
+	if (repeat == 1){
+		//on repeat cycle through the playlist
+		if (!shuffle){
+			//when not in shuffle cycle through plain playlist
+			if (current_track < playlist.length - 1 )
+				current_track += 1
+			else
+				current_track = 0
+		}
+		else{
+			//when on shuffle cycle through the shuffle list and reshuffle when end reached
+			if (current_shuffle < shuffle_list.length - 1){
+				current_shuffle += 1
+			}
+			else{
+				updateShuffleList()
+				current_shuffle = 1
+			}
+			//reflect selected new track as current track
+			current_track = shuffle_list[current_shuffle]
+		}
+	}
+	else
+	if (repeat == 0){
+		//when not in repeat do not cycle, stop playback when end reached
+		if (!shuffle){
+			if (current_track < playlist.length - 1 )
+				current_track += 1
+			else
+				return
+				//do not change track
+				//do not play the next track
+		}
+		else{
+			if (current_shuffle < shuffle_list.length - 1){
+				current_shuffle += 1
+			}
+			else{
+				updateShuffleList()
+				current_shuffle = 1
+			}
+			//reflect selected new track as current track
+			current_track = shuffle_list[current_shuffle]
+		}
+	}
+
+	updateCurrentTrack()
+	if (is_playing) playerdom.play()
 }
 
 function actionPrev(){
 	if (repeat == 2)
 		return
-
-	if(!shuffle){
-		if (current_track > 0 ){
-			current_track -= 1
-		}
-		else {
-			if (repeat == 0) return
-			else current_track = playlist.length - 1
-		}
-	}
-	else{
-		if (current_shuffle > 0){
-			current_shuffle -= 1
+	else
+	if (repeat == 1){
+		if (!shuffle){
+			if (current_track > 0 )
+				current_track -= 1
+			else
+				current_track = playlist.length - 1
 		}
 		else{
-			current_shuffle = shuffle_list.length - 1
+			if (current_shuffle > 0){
+				current_shuffle -= 1
+			}
+			else{
+				updateShuffleList()
+				current_shuffle = shuffle_list.length - 1
+			}
+			current_track = shuffle_list[current_shuffle]
 		}
-		current_track = shuffle_list[current_shuffle]
-	}
-
-	if (is_playing){
-		updateCurrentTrack()
-		playerdom.play()
 	}
 	else
-		updateCurrentTrack()
+	if (repeat == 0){
+		if (!shuffle){
+			if (current_track > 0 )
+				current_track -= 1
+			else
+				return
+		}
+		else{
+			if (current_shuffle > 0){
+				current_shuffle -= 1
+			}
+			else{
+				updateShuffleList()
+				current_shuffle = shuffle_list.length - 1
+			}
+			current_track = shuffle_list[current_shuffle]
+		}
+	}
+
+	updateCurrentTrack()
+	if (is_playing) playerdom.play()
 }
 
 function actionShuffle() {
@@ -165,12 +208,50 @@ function playbackPaused() {
 }
 
 function playbackEnded() {
-	is_playing = false
-	document.getElementById("play-button").innerHTML = "&gt"
-	if (shuffle || (current_track < playlist.length -1) ){
-		actionNext()
+	if (repeat == 2) playerdom.play()
+	else
+	if (repeat == 1){
+		if(!shuffle){
+			if ( current_track < playlist.length -1)
+				current_track += 1
+			else
+				current_track = 0
+		}
+		else{
+			if ( current_shuffle < shuffle_list.length -1)
+				current_shuffle += 1
+			else{
+				updateShuffleList()
+				current_shuffle = 1
+			}
+			current_track = shuffle_list[current_shuffle]
+		}
+		updateCurrentTrack()
 		playerdom.play()
 	}
+	else
+	if (repeat == 0) {
+		if(!shuffle){
+			if ( current_track < playlist.length -1)
+				current_track += 1
+			else{
+				is_playing = false
+				return
+			}
+		}
+		else{
+			if ( current_shuffle < shuffle_list.length -1)
+				current_shuffle += 1
+			else{
+				is_playing = false
+				return
+			}
+			current_track = shuffle_list[current_shuffle]
+		}
+		updateCurrentTrack()
+		playerdom.play()
+	}
+	document.getElementById("play-button").innerHTML = "&gt"
 }
 
 function updateElapsed() {
