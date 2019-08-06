@@ -7,7 +7,7 @@ let playlist =
 	"Artists/Aimer/Brave Shine/01 Brave Shine.m4a",
 	"Soundtracks/Angel Beats/[iSiscon] Girls Dead Monster - Keep The Beats! (MP3)/03 Shine Days.mp3",
 	"grandescape.mp3",
-	"Various Artists/Disney Greatest Love Songs (2008)/CD 2/08 - Lea Salonga - Reflection.mp3"
+//	"Various Artists/Disney Greatest Love Songs (2008)/CD 2/08 - Lea Salonga - Reflection.mp3"
 
 
 ]
@@ -192,7 +192,7 @@ function updateCurrentTrack(){
 			document.getElementById(id).className = "item_playing"
 		}
 		else 
-			document.getElementById(id).className = null
+			document.getElementById(id).className = ""
 	}
 	document.getElementById("track-name-text").innerHTML = playlist[current_track].split("/").slice(-1)[0]
 }
