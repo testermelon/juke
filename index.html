@@ -39,8 +39,12 @@
 		</div>
 
 		<div>
-			<select style="width:100%">
-				<option>Playlist 1</option>
+			<select id="playlist-select" 
+				onchange=obtainPlaylist(this.value)
+				style="width:100%">
+				<option>playlist1.pl</option>
+				<option>Playlist1</option>
+				<option>play2</option>
 			</select>
 		</div>
 
