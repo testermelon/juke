@@ -3,9 +3,17 @@
 //These needs to be prepared and reflected on the html (view) at init time
 let playlist_home = "../firedrives/Gentiana/Music/";
 let playlist = [];
+let playlist_showing = [];
 let shuffle_list = [];
 let current_shuffle = 0;
 
+//these 3 variables shall be stored in cookies
+// showing playlist_name
+// current_track
+// playback_volume
+
+let current_playlist_name;
+let showing_playlist_name;
 let current_track = 0;
 let is_playing = false;
 let shuffle = false;
@@ -15,6 +23,7 @@ let repeat = 0;
 let playerdom;
 let seekbardom;
 let volumedom;
+let playback_volume;
 
 
 //User Actions
@@ -22,7 +31,16 @@ let volumedom;
 
 function actionPlay(){
 	if (!is_playing) {
-		playerdom.play();
+		if(current_playlist_name == showing_playlist_name)
+			playerdom.play();
+		else{
+			playlist = playlist_showing;
+			current_playlist_name = showing_playlist_name;
+			current_track = 0;
+			updateShuffleList();
+			updateCurrentTrack();
+			playerdom.play();
+		}
 	}
 	else {
 		playerdom.pause();
@@ -44,48 +62,84 @@ function actionNext(){
 	}
 	else
 	if (repeat == 1){
-		//on repeat cycle through the playlist
-		if (!shuffle){
-			//when not in shuffle cycle through plain playlist
-			if (current_track < playlist.length - 1 )
-				current_track += 1;
-			else
-				current_track = 0;
-		}
-		else{
-			//when on shuffle cycle through the shuffle list and reshuffle when end reached
-			if (current_shuffle < shuffle_list.length - 1){
-				current_shuffle += 1;
+		//playlist has not changed
+		if (current_playlist_name == showing_playlist_name){
+			//on repeat cycle through the playlist
+			if (!shuffle){
+				//when not in shuffle cycle through plain playlist
+				if (current_track < playlist.length - 1 )
+					current_track += 1;
+				else
+					current_track = 0;
 			}
 			else{
+				//when on shuffle cycle through the shuffle list and reshuffle when end reached
+				if (current_shuffle < shuffle_list.length - 1){
+					current_shuffle += 1;
+				}
+				else{
+					updateShuffleList();
+					current_shuffle = 1;
+				}
+				//reflect selected new track as current track
+				current_track = shuffle_list[current_shuffle];
+			}
+		}
+		else{	//playlist has changed
+			if (!shuffle){
+				playlist = playlist_showing;
+				current_playlist_name = showing_playlist_name;
+				current_track = 0;
+			}
+			else{
+				playlist = playlist_showing;
+				current_playlist_name = showing_playlist_name;
+				current_track = 0;
 				updateShuffleList();
 				current_shuffle = 1;
+				current_track = shuffle_list[current_shuffle];
 			}
-			//reflect selected new track as current track
-			current_track = shuffle_list[current_shuffle];
 		}
 	}
 	else
 	if (repeat == 0){
-		//when not in repeat do not cycle, stop playback when end reached
-		if (!shuffle){
-			if (current_track < playlist.length - 1 )
-				current_track += 1;
-			else
-				return;
-				//do not change track
-				//do not play the next track
-		}
-		else{
-			if (current_shuffle < shuffle_list.length - 1){
-				current_shuffle += 1;
+		//playlist has not changed
+		if (current_playlist_name == showing_playlist_name){
+			//when not in repeat do not cycle, stop playback when end reached
+			if (!shuffle){
+				if (current_track < playlist.length - 1 )
+					current_track += 1;
+				else
+					return;
+					//do not change track
+					//do not play the next track
 			}
 			else{
+				if (current_shuffle < shuffle_list.length - 1){
+					current_shuffle += 1;
+				}
+				else{
+					updateShuffleList();
+					current_shuffle = 1;
+				}
+				//reflect selected new track as current track
+				current_track = shuffle_list[current_shuffle];
+			}
+		}
+		else{	//playlist has changed
+			if (!shuffle){
+				playlist = playlist_showing;
+				current_playlist_name = showing_playlist_name;
+				current_track = 0;
+			}
+			else{
+				playlist = playlist_showing;
+				current_playlist_name = showing_playlist_name;
+				current_track = 0;
 				updateShuffleList();
 				current_shuffle = 1;
+				current_track = shuffle_list[current_shuffle];
 			}
-			//reflect selected new track as current track
-			current_track = shuffle_list[current_shuffle];
 		}
 	}
 
@@ -98,40 +152,76 @@ function actionPrev(){
 		return;
 	else
 	if (repeat == 1){
-		if (!shuffle){
-			if (current_track > 0 )
-				current_track -= 1;
-			else
-				current_track = playlist.length - 1;
-		}
-		else{
-			if (current_shuffle > 0){
-				current_shuffle -= 1;
+		//playlist has not changed
+		if (current_playlist_name == showing_playlist_name){
+			if (!shuffle){
+				if (current_track > 0 )
+					current_track -= 1;
+				else
+					current_track = playlist.length - 1;
 			}
 			else{
-				updateShuffleList();
-				current_shuffle = shuffle_list.length - 1;
+				if (current_shuffle > 0){
+					current_shuffle -= 1;
+				}
+				else{
+					updateShuffleList();
+					current_shuffle = shuffle_list.length - 1;
+				}
+				current_track = shuffle_list[current_shuffle];
 			}
-			current_track = shuffle_list[current_shuffle];
+		}
+		else{	//playlist has changed
+			if (!shuffle){
+				playlist = playlist_showing;
+				current_playlist_name = showing_playlist_name;
+				current_track = 0;
+			}
+			else{
+				playlist = playlist_showing;
+				current_playlist_name = showing_playlist_name;
+				current_track = 0;
+				updateShuffleList();
+				current_shuffle = 1;
+				current_track = shuffle_list[current_shuffle];
+			}
 		}
 	}
 	else
 	if (repeat == 0){
-		if (!shuffle){
-			if (current_track > 0 )
-				current_track -= 1;
-			else
-				return;
-		}
-		else{
-			if (current_shuffle > 0){
-				current_shuffle -= 1;
+		//playlist has not changed
+		if (current_playlist_name == showing_playlist_name){
+			if (!shuffle){
+				if (current_track > 0 )
+					current_track -= 1;
+				else
+					return;
 			}
 			else{
-				updateShuffleList();
-				current_shuffle = shuffle_list.length - 1;
+				if (current_shuffle > 0){
+					current_shuffle -= 1;
+				}
+				else{
+					updateShuffleList();
+					current_shuffle = shuffle_list.length - 1;
+				}
+				current_track = shuffle_list[current_shuffle];
 			}
-			current_track = shuffle_list[current_shuffle];
+		}
+		else{	//playlist has changed
+			if (!shuffle){
+				playlist = playlist_showing;
+				current_playlist_name = showing_playlist_name;
+				current_track = 0;
+			}
+			else{
+				playlist = playlist_showing;
+				current_playlist_name = showing_playlist_name;
+				current_track = 0;
+				updateShuffleList();
+				current_shuffle = 1;
+				current_track = shuffle_list[current_shuffle];
+			}
 		}
 	}
 
@@ -182,6 +272,7 @@ function initPlayer() {
 	playerdom = document.getElementById("player");
 	seekbardom = document.getElementById("seekbar");
 	volumedom = document.getElementById("volume-slider");
+	playerdom.volume = volumedom.value;
 	//to be obtained using AJAX
 //	playlist = 
 //	[
@@ -193,27 +284,27 @@ function initPlayer() {
 	obtainPlaylist(document.getElementById("playlist-select").value);
 }
 
+//obtain playlist from server and show it to playlist pane
 function obtainPlaylist(name) {
 	let xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			playlist = this.responseText.split("\n");
-			playlist.pop()
-			document.getElementById("tracklist").innerHTML = generatePlaylist();
-			updateCurrentTrack();
-			updateShuffleList();
+			playlist_showing = this.responseText.split("\n");
+			playlist_showing.pop(); //to delete extra last element when splitting using newline as separator
+			document.getElementById("tracklist").innerHTML = showPlaylist(playlist_showing);
+			showing_playlist_name = name;
 		}
 	}
 	xhttp.open("GET",name,true);
 	xhttp.send();
 }
 
-
-function generatePlaylist(){
+//show a playlist to the playlist pane
+function showPlaylist(playlist_to_show){
 	let playlist_html = '<table style="width:100%">';
 	let name = "";
-	for (let i=0;i<playlist.length;i++){
-		name = playlist[i].split("/").slice(-1)[0];
+	for (let i=0;i<playlist_to_show.length;i++){
+		name = playlist_to_show[i].split("/").slice(-1)[0];
 		playlist_html += '<tr id="track_' + i + '">';
 		playlist_html += '<td>';
 		playlist_html += '<span id="track_' + i + '_name" style="float:left; vertical-align: middle">';
@@ -228,7 +319,6 @@ function generatePlaylist(){
 function playbackPlayed() {
 	is_playing = true;
 	document.getElementById("play-button").innerHTML = "||";
-	document.getElementById("volume-slider").value = document.getElementById("player").volume;
 	setTimeout(updateElapsed,50);
 }
 
@@ -242,45 +332,83 @@ function playbackEnded() {
 	if (repeat == 2) playerdom.play();
 	else
 	if (repeat == 1){
-		if(!shuffle){
-			if ( current_track < playlist.length -1)
-				current_track += 1;
-			else
-				current_track = 0;
-		}
-		else{
-			if ( current_shuffle < shuffle_list.length -1)
-				current_shuffle += 1;
+		//playlist has not changed
+		if (current_playlist_name == showing_playlist_name){
+			if(!shuffle){
+				if ( current_track < playlist.length -1)
+					current_track += 1;
+				else
+					current_track = 0;
+			}
 			else{
+				if ( current_shuffle < shuffle_list.length -1)
+					current_shuffle += 1;
+				else{
+					updateShuffleList();
+					current_shuffle = 1;
+				}
+				current_track = shuffle_list[current_shuffle];
+			}
+			updateCurrentTrack();
+			playerdom.play();
+		}
+		else{	//playlist has changed
+			if (!shuffle){
+				playlist = playlist_showing;
+				current_playlist_name = showing_playlist_name;
+				current_track = 0;
+			}
+			else{
+				playlist = playlist_showing;
+				current_playlist_name = showing_playlist_name;
+				current_track = 0;
 				updateShuffleList();
 				current_shuffle = 1;
+				current_track = shuffle_list[current_shuffle];
 			}
-			current_track = shuffle_list[current_shuffle];
 		}
-		updateCurrentTrack();
-		playerdom.play();
 	}
 	else
 	if (repeat == 0) {
-		if(!shuffle){
-			if ( current_track < playlist.length -1)
-				current_track += 1;
-			else{
-				is_playing = false;
-				return;
+		//playlist has not changed
+		if (current_playlist_name == showing_playlist_name){
+			if(!shuffle){
+				if ( current_track < playlist.length -1)
+					current_track += 1;
+				else{
+					is_playing = false;
+					return;
+				}
 			}
-		}
-		else{
-			if ( current_shuffle < shuffle_list.length -1)
-				current_shuffle += 1;
 			else{
-				is_playing = false;
-				return;
+				if ( current_shuffle < shuffle_list.length -1)
+					current_shuffle += 1;
+				else{
+					is_playing = false;
+					return;
+				}
+				current_track = shuffle_list[current_shuffle];
 			}
-			current_track = shuffle_list[current_shuffle];
+			updateCurrentTrack();
+			playerdom.play();
 		}
-		updateCurrentTrack();
-		playerdom.play();
+		else{	//playlist has changed
+			if (!shuffle){
+				playlist = playlist_showing;
+				current_playlist_name = showing_playlist_name;
+				current_track = 0;
+			}
+			else{
+				playlist = playlist_showing;
+				current_playlist_name = showing_playlist_name;
+				current_track = 0;
+				updateShuffleList();
+				current_shuffle = 1;
+				current_track = shuffle_list[current_shuffle];
+			}
+			updateCurrentTrack();
+			playerdom.play();
+		}
 	}
 	document.getElementById("play-button").innerHTML = "&gt";
 }
