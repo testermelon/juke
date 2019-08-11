@@ -25,6 +25,8 @@ let seekbardom;
 let volumedom;
 let playback_volume;
 
+//state variables of the browser
+let current_dir = "";
 
 //User Actions
 //Script for user actions, these are mainly button pushes, etc.
@@ -260,6 +262,14 @@ function actionRepeat() {
 
 }
 
+function actionBrowserUp(){
+	let slice_dir = current_dir.split("%2F");
+	slice_dir.pop();
+	slice_dir.pop();
+	let updir = slice_dir.join("%2F");
+	obtainDirList(updir); 
+}
+
 function volumeChange() {
 	playerdom.volume = volumedom.value;
 }
@@ -273,30 +283,8 @@ function initPlayer() {
 	seekbardom = document.getElementById("seekbar");
 	volumedom = document.getElementById("volume-slider");
 	playerdom.volume = volumedom.value;
-	//to be obtained using AJAX
-//	playlist = 
-//	[
-//		"Artists/Aimer/Brave Shine/01 Brave Shine.m4a",
-//		"Soundtracks/Angel Beats/[iSiscon] Girls Dead Monster - Keep The Beats! (MP3)/03 Shine Days.mp3",
-//		"grandescape.mp3",
-//		"Various Artists/Disney Greatest Love Songs (2008)/CD 2/08 - Lea Salonga - Reflection.mp3"
-//	]
+	obtainDirList(encodeURIComponent(playlist_home));
 	obtainPlaylist(document.getElementById("playlist-select").value);
-}
-
-//obtain playlist from server and show it to playlist pane
-function obtainPlaylist(name) {
-	let xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			playlist_showing = this.responseText.split("\n");
-			playlist_showing.pop(); //to delete extra last element when splitting using newline as separator
-			document.getElementById("tracklist").innerHTML = showPlaylist(playlist_showing);
-			showing_playlist_name = name;
-		}
-	}
-	xhttp.open("GET",name,true);
-	xhttp.send();
 }
 
 //show a playlist to the playlist pane
@@ -309,7 +297,10 @@ function showPlaylist(playlist_to_show){
 		playlist_html += '<td>';
 		playlist_html += '<span id="track_' + i + '_name" style="float:left; vertical-align: middle">';
 		playlist_html += name;
-		playlist_html += '</span> <span style="float:right"> <button class="small_button">&gt</button> <button class="small_button">x</button> </span> </tr>';
+		playlist_html += '</span>';
+		playlist_html += '<span style="float:right">';
+		playlist_html += '<button class="small_button">x</button>';
+		playlist_html += '</span> </tr>';
 	}
 	playlist_html += '</table>';
 	return playlist_html;
@@ -423,7 +414,7 @@ function updateElapsed() {
 }
 
 function updateCurrentTrack(){
-	playerdom.src = playlist_home + playlist[current_track];
+	playerdom.src = playlist_home + "%2F" + playlist[current_track];
 	setTimeout(updateElapsed,50);
 	let id;
 	for (let i=0;i<playlist.length;i++){
@@ -464,6 +455,39 @@ function formatTime(time_in_seconds){
 	if (seconds < 10) seconds = "0" + seconds;
 	if (minutes < 10) minutes = "0" + minutes;
 	return minutes + ":" + seconds;
+}
+
+// AJAX codes
+
+//obtain playlist from server and show it to playlist pane
+//
+function obtainPlaylist(name) {
+	let xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			playlist_showing = this.responseText.split("\n");
+			playlist_showing.pop(); //to delete extra last element when splitting using newline as separator
+			document.getElementById("tracklist").innerHTML = showPlaylist(playlist_showing);
+			showing_playlist_name = name;
+		}
+	}
+	xhttp.open("GET",name,true);
+	xhttp.send();
+}
+
+//obtain playlist from server and show it to playlist pane
+// dirname should be URL safe
+//
+function obtainDirList(dirname) {
+	let xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementById("filelist").innerHTML = this.responseText;
+			current_dir = dirname + "%2F";
+		}
+	}
+	xhttp.open("GET","getDirList.php?dir="+dirname,true);
+	xhttp.send();
 }
 
 

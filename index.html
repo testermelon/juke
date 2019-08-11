@@ -7,6 +7,7 @@
 
 <body>
 
+	<script src="browser.js"></script>
 	<script src="player.js"></script>
 
 	<div style="display:grid; grid-gap:5px; grid-template-columns: 1fr 1fr; ">
@@ -19,7 +20,7 @@
 		</div>
 
 		<div>
-			<button class="playlist_button">Up</button>
+			<button onclick=actionBrowserUp() class="playlist_button">Up</button>
 			<button class="playlist_button">&lt&lt</button>
 		</div>
 
@@ -32,8 +33,8 @@
 		</div>
 
 		<div>
-			<select style="width:100%">
-				<option>Artists/Aimer</option>
+			<select id="currentdir" style="width:100%">
+				<option>/</option>
 			</select>
 
 		</div>
@@ -49,42 +50,7 @@
 		</div>
 
 		<div id="filelist" class="items_list">
-			<table style="width:100%">
-				<tr >
-				<td>
-				<span style="float:left"> 
-					01 Brave Shine.m4a 
-				</span>
-				<span style="float:right">
-					<button class="small_button">&gt</button> 
-					<button class="small_button">+</button> 
-				</span>
-				</tr>
 
-				<tr>
-				<td>
-				<span style="float:left"> 
-					03 Shine Days.mp3
-				</span>
-				<span style="float:right">
-					<button class="small_button">&gt</button> 
-					<button class="small_button">+</button> 
-				</span>
-				</tr>
-
-				<tr>
-				<td>
-				<span style="float:left"> 
-					01 Maria.m4a
-				</span>
-				<span style="float:right">
-					<button class="small_button">&gt</button> 
-					<button class="small_button">+</button> 
-				</span>
-				</tr>
-
-
-			</table>
 		</div>
 
 
