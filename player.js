@@ -473,7 +473,7 @@ function obtainPlaylist(name) {
 			showing_playlist_name = name;
 		}
 	}
-	xhttp.open("GET","playlist.php?pl="+encodeURIComponent(name),true);
+	xhttp.open("GET","playlist.php?op=get&pl="+encodeURIComponent(name),true);
 	xhttp.send();
 }
 
