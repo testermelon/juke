@@ -1,7 +1,7 @@
 
 //State variables for the music player
 //These needs to be prepared and reflected on the html (view) at init time
-let playlist_home = "../firedrives/Gentiana/Music/";
+let playlist_home = "../firedrives/Gentiana/Music";
 let playlist = [];
 let playlist_showing = [];
 let shuffle_list = [];
@@ -268,7 +268,10 @@ function actionBrowserUp(){
 	slice_dir.pop();
 	let updir = slice_dir.join("%2F");
 	obtainDirList(updir); 
+	//TODO restrict going up from home
 }
+
+
 
 function volumeChange() {
 	playerdom.volume = volumedom.value;
@@ -414,7 +417,7 @@ function updateElapsed() {
 }
 
 function updateCurrentTrack(){
-	playerdom.src = playlist_home + "%2F" + playlist[current_track];
+	playerdom.src = playlist_home + "/" + playlist[current_track];
 	setTimeout(updateElapsed,50);
 	let id;
 	for (let i=0;i<playlist.length;i++){
@@ -465,13 +468,12 @@ function obtainPlaylist(name) {
 	let xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			playlist_showing = this.responseText.split("\n");
-			playlist_showing.pop(); //to delete extra last element when splitting using newline as separator
+			playlist_showing = JSON.parse(this.responseText);
 			document.getElementById("tracklist").innerHTML = showPlaylist(playlist_showing);
 			showing_playlist_name = name;
 		}
 	}
-	xhttp.open("GET",name,true);
+	xhttp.open("GET","playlist.php?pl="+encodeURIComponent(name),true);
 	xhttp.send();
 }
 
@@ -491,6 +493,16 @@ function obtainDirList(dirname) {
 }
 
 
+function addFile(path) {
+	let xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			obtainPlaylist(current_playlist_name);
+		}
+	}
+	xhttp.open("GET","addfile.php?path="+path,true);
+	xhttp.send();
+}
 //execution scripts 
 
 window.addEventListener("DOMContentLoaded", initPlayer);

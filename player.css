@@ -11,7 +11,7 @@ body {
 }
 
 
-tr:hover {
+.browser_item:hover {
 	background-color: #666666;
 }
 
