@@ -4,7 +4,8 @@
 //
 //parameters:
 //  op = operation code. Obtain using $_GET['op']
-//  pl = playlist name
+//  pl = playlist no
+//  n = playlist name
 //  path = track's path relative to Music directory home
 //  tr = track number of the track in the playlist
 //
@@ -12,68 +13,99 @@
 
 //filename of playlist data
 
-$pl_fname = ".pldata.json";
+$pl_fname = "pldata";
 
 //outputs list of playlists currently available
 function plList(){
-	$pljson = file_get_contents(".pldata.json");
+	global $pl_fname;
+	$pljson = file_get_contents($pl_fname);
 	$plData = json_decode($pljson,true);
-	echo json_encode(array_keys($plData));
+	$pl_list = [];
+	foreach($plData as $playlist){
+		array_push($pl_list,$playlist['name']);
+	}
+	echo json_encode($pl_list);
+
 }
 
 //outputs tracklist of requested playlists
-function plGet($plname){
-	$pljson = file_get_contents(".pldata.json");
+function plGet($pl){
+	global $pl_fname;
+	$pljson = file_get_contents("$pl_fname");
 	$plData = json_decode($pljson,true);
-	$pl	= $plData[$plname];
-	echo  json_encode($pl);
+	$playlist = $plData[$pl]['tracklist'];
+	echo  json_encode($playlist);
 }
 
 //push track to a playlist
-function plAddTrack($plname,$file_path){
-	$pljson = file_get_contents(".pldata.json");
+//puts out resulting tracklist
+function plAddTrack($pl,$file_path){
+	global $pl_fname;
+	$pljson = file_get_contents("$pl_fname");
 	$plData = json_decode($pljson,true);
-	array_push($plData[$plname],$file_path);
+	array_push($plData[$pl]['tracklist'],$file_path);
 	$pljson = json_encode($plData);
-	$status = file_put_contents(".pldata.json",$pljson);
+	$status = file_put_contents("$pl_fname",$pljson);
+	echo json_encode($plData[$pl]['tracklist']);
 }
 
 //create new empty playlist and put it last
-function plNewPlaylist($plname){
-	$pljson = file_get_contents(".pldata.json");
+function plNewPlaylist($pl_name){
+	global $pl_fname;
+	$pljson = file_get_contents("$pl_fname");
 	$plData = json_decode($pljson,true);
+	$new_pl = array("name" => $pl_name,"tracklist" => [] );
+	array_push($plData,$new_pl);
+	var_dump(json_encode($plData));
+	$pljson = json_encode($plData);
+	$status = file_put_contents("$pl_fname",$pljson);
 }
 
-function plClearPlaylist($plname){
-	$pljson = file_get_contents(".pldata.json");
+function plClearPlaylist($pl){
+	global $pl_fname;
+	$pljson = file_get_contents("$pl_fname");
 	$plData = json_decode($pljson,true);
+	$plData[$pl]['tracklist'] = [];
+	$pljson = json_encode($plData);
+	$status = file_put_contents("$pl_fname",$pljson);
+	echo json_encode($plData[$pl]['tracklist']);
 }
 
-function plDelPlaylist($plname){
-	$pljson = file_get_contents(".pldata.json");
+function plDelPlaylist($pl){
+	global $pl_fname;
+	$pljson = file_get_contents("$pl_fname");
 	$plData = json_decode($pljson,true);
+	array_splice($plData,$pl,1);
+	$pljson = json_encode($plData);
+	$status = file_put_contents("$pl_fname",$pljson);
 }
 
-function plRemoveTrack($plname,$track_no){
-	$pljson = file_get_contents(".pldata.json");
+function plRemoveTrack($pl,$tr){
+	global $pl_fname;
+	$pljson = file_get_contents("$pl_fname");
 	$plData = json_decode($pljson,true);
+	array_splice($plData[$pl]['tracklist'],$tr,1);
+	$pljson = json_encode($plData);
+	$status = file_put_contents("$pl_fname",$pljson);
 }
 
 //swap track track_no and track_no+1, except when its last or first
 function plSwapTrack($plname,$track_no){
-	$pljson = file_get_contents(".pldata.json");
+	global $pl_fname;
+	$pljson = file_get_contents("$pl_fname");
 	$plData = json_decode($pljson,true);
 }
 
 function plInitializeData(){
-	$plData = array("New Playlist 1" => [""]);
+	//need to make playlist names have duplicates, 
+	//so, instead of using playlist names, use array index as unique id
+	//TODO change client side js also
+	global $pl_fname;
+	$plData = array(["name" => "New Playlist","tracklist" => [] ]);
+	var_dump($plData);
 	$pljson = json_encode($plData);
 	var_dump($pljson);
 	$status = file_put_contents($pl_fname,$pljson);
-	var_dump($status);
-	$status = is_writable(".");
-	var_dump($status);
-	echo exec('whoami'); 
 }
 
 //execute according to op parameter
@@ -85,12 +117,12 @@ switch($_GET['op']){
 		plGet($_GET['pl']);
 		break;
 	case 'new' :
-		plNewPlaylist($_GET['pl']);
+		plNewPlaylist($_GET['n']);
 		break;
 	case 'clr' :
 		plClearPlaylist($_GET['pl']);
 		break;
-	case 'dl' :
+	case 'del' :
 		plDelPlaylist($_GET['pl']);
 		break;
 	case 'add' :
@@ -104,6 +136,7 @@ switch($_GET['op']){
 		break;
 	case 'init':
 		plInitializeData();
+		echo "OK";
 		break;
 }
 
