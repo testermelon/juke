@@ -59,11 +59,11 @@ let current_dir = "";
 function actionPlay(){
 
 	if (!is_playing) {
-		if(playlist_no == showing_playlist_no)
+		if(playlist_no == playlist_showing_no)
 			playerdom.play();
 		else{
 			playlist = playlist_showing;
-			playlist_no = showing_playlist_no;
+			playlist_no = playlist_showing_no;
 			current_track = 0;
 			updateShuffleList();
 			updateCurrentTrack();
@@ -92,7 +92,7 @@ function actionNext(){
 	if (repeat == 1){
 
 		//playlist not changed
-		if (playlist_no == showing_playlist_no){  
+		if (playlist_no == playlist_showing_no){  
 
 			if (!shuffle){
 				// no shuffle set -> go to next track, 
@@ -122,7 +122,7 @@ function actionNext(){
 		else{	//playlist has changed
 			
 			playlist = playlist_showing;
-			playlist_no = showing_playlist_no;
+			playlist_no = playlist_showing_no;
 			current_track = 0;
 
 			if (shuffle){
@@ -136,7 +136,7 @@ function actionNext(){
 	if (repeat == 0){
 
 		//playlist has not changed
-		if (playlist_no == showing_playlist_no){
+		if (playlist_no == playlist_showing_no){
 
 			//when not in repeat do not cycle, stop playback when end reached
 			if (!shuffle){
@@ -163,12 +163,12 @@ function actionNext(){
 		else{	//playlist has changed
 			if (!shuffle){
 				playlist = playlist_showing;
-				playlist_no = showing_playlist_no;
+				playlist_no = playlist_showing_no;
 				current_track = 0;
 			}
 			else{
 				playlist = playlist_showing;
-				playlist_no = showing_playlist_no;
+				playlist_no = playlist_showing_no;
 				current_track = 0;
 				updateShuffleList();
 				current_shuffle = 1;
@@ -187,7 +187,7 @@ function actionPrev(){
 	else
 	if (repeat == 1){
 		//playlist has not changed
-		if (playlist_no == showing_playlist_no){
+		if (playlist_no == playlist_showing_no){
 			if (!shuffle){
 				if (current_track > 0 )
 					current_track -= 1;
@@ -208,12 +208,12 @@ function actionPrev(){
 		else{	//playlist has changed
 			if (!shuffle){
 				playlist = playlist_showing;
-				playlist_no = showing_playlist_no;
+				playlist_no = playlist_showing_no;
 				current_track = 0;
 			}
 			else{
 				playlist = playlist_showing;
-				playlist_no = showing_playlist_no;
+				playlist_no = playlist_showing_no;
 				current_track = 0;
 				updateShuffleList();
 				current_shuffle = 1;
@@ -224,7 +224,7 @@ function actionPrev(){
 	else
 	if (repeat == 0){
 		//playlist has not changed
-		if (playlist_no == showing_playlist_no){
+		if (playlist_no == playlist_showing_no){
 			if (!shuffle){
 				if (current_track > 0 )
 					current_track -= 1;
@@ -245,12 +245,12 @@ function actionPrev(){
 		else{	//playlist has changed
 			if (!shuffle){
 				playlist = playlist_showing;
-				playlist_no = showing_playlist_no;
+				playlist_no = playlist_showing_no;
 				current_track = 0;
 			}
 			else{
 				playlist = playlist_showing;
-				playlist_no = showing_playlist_no;
+				playlist_no = playlist_showing_no;
 				current_track = 0;
 				updateShuffleList();
 				current_shuffle = 1;
@@ -303,11 +303,27 @@ function actionBrowserUp(){
 	//TODO restrict going up from home
 }
 
-
-
 function volumeChange() {
 	playerdom.volume = volumedom.value;
 }
+
+
+function actionPlaylistNew(){
+	let name = prompt("Nama playlist barunya apa?", "New Playlist");
+	if(name==null) return;
+	newPlaylist(name);
+}
+
+function actionPlaylistDelete(){
+	let okay = confirm("Hapus playlist " + playlist_list[playlist_showing_no] + "?" );
+	if(okay==null) return;
+	delPlaylist(playlist_showing_no);
+}
+
+function actionTrackDelete(plno,trno){
+	delTrack(plno,trno);
+}
+
 
 //event handlings
 //These are mostly event handlers, some of them are natural browser events, some of them are artifical events that needs to be triggered manually 
@@ -342,7 +358,7 @@ function playbackEnded() {
 	else
 	if (repeat == 1){
 		//playlist has not changed
-		if (playlist_no == showing_playlist_no){
+		if (playlist_no == playlist_showing_no){
 			if(!shuffle){
 				if ( current_track < playlist.length -1)
 					current_track += 1;
@@ -364,12 +380,12 @@ function playbackEnded() {
 		else{	//playlist has changed
 			if (!shuffle){
 				playlist = playlist_showing;
-				playlist_no = showing_playlist_no;
+				playlist_no = playlist_showing_no;
 				current_track = 0;
 			}
 			else{
 				playlist = playlist_showing;
-				playlist_no = showing_playlist_no;
+				playlist_no = playlist_showing_no;
 				current_track = 0;
 				updateShuffleList();
 				current_shuffle = 1;
@@ -380,7 +396,7 @@ function playbackEnded() {
 	else
 	if (repeat == 0) {
 		//playlist has not changed
-		if (playlist_no == showing_playlist_no){
+		if (playlist_no == playlist_showing_no){
 			if(!shuffle){
 				if ( current_track < playlist.length -1)
 					current_track += 1;
@@ -404,12 +420,12 @@ function playbackEnded() {
 		else{	//playlist has changed
 			if (!shuffle){
 				playlist = playlist_showing;
-				playlist_no = showing_playlist_no;
+				playlist_no = playlist_showing_no;
 				current_track = 0;
 			}
 			else{
 				playlist = playlist_showing;
-				playlist_no = showing_playlist_nao;
+				playlist_no = playlist_showing_no;
 				current_track = 0;
 				updateShuffleList();
 				current_shuffle = 1;
@@ -476,7 +492,10 @@ function formatTime(time_in_seconds){
 	return minutes + ":" + seconds;
 }
 
+
+//**********************
 // AJAX codes
+//**********************
 
 //obtain list of playlists 
 function obtainPlaylistList() {
@@ -488,7 +507,8 @@ function obtainPlaylistList() {
 			for(let i=0; i<playlist_list.length;i++){
 				actions += "<option value=\""+ i + "\">" + playlist_list[i] + "</option>";
 			}
-			document.getElementById("playlist-select").innerHTML = actions;
+			plselectdom.innerHTML = actions;
+
 		}
 	}
 	xhttp.open("GET","playlist.php?op=ls",true);
@@ -502,7 +522,7 @@ function obtainPlaylist(pl_number) {
 		if (this.readyState == 4 && this.status == 200) {
 			playlist_showing = JSON.parse(this.responseText);
 			document.getElementById("tracklist").innerHTML = showPlaylist(playlist_showing);
-			showing_playlist_no = pl_number;
+			playlist_showing_no = pl_number;
 		}
 	}
 	xhttp.open("GET","playlist.php?op=get&pl="+pl_number,true);
@@ -529,8 +549,8 @@ function addFile(path) {
 	let xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
-			obtainPlaylist(showing_playlist_no);
-			if(playlist_no == showing_playlist_no){
+			obtainPlaylist(playlist_showing_no);
+			if(playlist_no == playlist_showing_no){
 				playlist = playlist_showing;
 				if(shuffle) updateShuffleList();
 			}
@@ -554,7 +574,7 @@ function showPlaylist(playlist_to_show){
 		playlist_html += name;
 		playlist_html += '</span>';
 		playlist_html += '<span style="float:right">';
-		playlist_html += '<button class="small_button">x</button>';
+		playlist_html += '<button onclick=actionTrackDelete(' + playlist_showing_no + ',' + i + ') class="small_button">x</button>';
 		playlist_html += '</span> </tr>';
 	}
 	playlist_html += '</table>';
@@ -562,7 +582,56 @@ function showPlaylist(playlist_to_show){
 }
 	
 
+function newPlaylist(playlist_name) {
+	let xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			obtainPlaylistList();
 
+		}
+	}
+	
+	xhttp.open("GET","playlist.php?op=new&n="+ playlist_name,true);
+	xhttp.send();
+}
+
+
+function delPlaylist(plno) {
+	let xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			obtainPlaylistList();
+		}
+	}
+	
+	xhttp.open("GET","playlist.php?op=del&pl="+ plno,true);
+	xhttp.send();
+}
+
+function delTrack(plno,trno) {
+	let xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			obtainPlaylist(playlist_showing_no);
+
+		}
+	}
+	
+	xhttp.open("GET","playlist.php?op=dt&pl="+ plno + "&tr=" + trno,true);
+	xhttp.send();
+}
+
+function clearPlaylist(plno) {
+	let xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			obtainPlaylist(playlist_showing_no);
+		}
+	}
+	
+	xhttp.open("GET","playlist.php?op=clr&pl="+ plno ,true);
+	xhttp.send();
+}
 //execution scripts 
 
 window.addEventListener("DOMContentLoaded", initPlayer);
