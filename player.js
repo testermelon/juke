@@ -314,6 +314,13 @@ function actionPlaylistNew(){
 	newPlaylist(name);
 }
 
+function actionRenamePlaylist() {
+	let name = prompt("Nama barunya apa?", "New Playlist");
+	if(name==null) return;
+	renamePlaylist(playlist_showing_no,name);
+}
+
+
 function actionPlaylistDelete(){
 	let okay = confirm("Hapus playlist " + playlist_list[playlist_showing_no] + "?" );
 	if(okay==null) return;
@@ -630,6 +637,19 @@ function clearPlaylist(plno) {
 	}
 	
 	xhttp.open("GET","playlist.php?op=clr&pl="+ plno ,true);
+	xhttp.send();
+}
+
+function renamePlaylist(plno,name) {
+	let xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			obtainPlaylistList();
+
+		}
+	}
+	
+	xhttp.open("GET","playlist.php?op=ren&pl="+ plno + "&n=" + name,true);
 	xhttp.send();
 }
 //execution scripts 

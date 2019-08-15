@@ -79,7 +79,14 @@ function plDelPlaylist($pl){
 	$pljson = json_encode($plData);
 	$status = file_put_contents("$pl_fname",$pljson);
 }
-
+function plRenamePlaylist($pl,$name){
+	global $pl_fname;
+	$pljson = file_get_contents("$pl_fname");
+	$plData = json_decode($pljson,true);
+	$plData[$pl]['name'] = $name;
+	$pljson = json_encode($plData);
+	$status = file_put_contents("$pl_fname",$pljson);
+}
 function plRemoveTrack($pl,$tr){
 	global $pl_fname;
 	$pljson = file_get_contents("$pl_fname");
@@ -121,6 +128,9 @@ switch($_GET['op']){
 		break;
 	case 'clr' :
 		plClearPlaylist($_GET['pl']);
+		break;
+	case 'ren' :
+		plRenamePlaylist($_GET['pl'],$_GET['n']);
 		break;
 	case 'del' :
 		plDelPlaylist($_GET['pl']);
