@@ -576,13 +576,14 @@ function showPlaylist(playlist_to_show){
 	for (let i=0;i<playlist_to_show.length;i++){
 		name = playlist_to_show[i].split("/").slice(-1)[0];
 		playlist_html += '<tr id="track_' + i + '">';
-		playlist_html += '<td>';
+		playlist_html += '<td class="list_item">';
 		playlist_html += '<span id="track_' + i + '_name" style="float:left; vertical-align: middle">';
+	
 		playlist_html += name;
 		playlist_html += '</span>';
 		playlist_html += '<span style="float:right">';
-		playlist_html += '<button onclick=actionTrackDelete(' + playlist_showing_no + ',' + i + ') class="small_button">x</button>';
-		playlist_html += '</span> </tr>';
+		playlist_html += '<button onclick=actionTrackDelete(' + playlist_showing_no + ',' + i + ') class="track_button">x</button>';
+		playlist_html += '</span> </td?> </tr>';
 	}
 	playlist_html += '</table>';
 	return playlist_html;

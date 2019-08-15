@@ -11,7 +11,7 @@ body {
 }
 
 
-.browser_item:hover {
+.list_item:hover {
 	background-color: #666666;
 }
 
@@ -25,11 +25,12 @@ body {
 }
 
 .small_button:hover {
-	background-color: #777777;
+	background-color: #FFFFFF;
+	color: black;
 }
 
 .highlight_small_button {
-	background-color: #999999;
+	background-color: #EEEEEE;
 	border: none;
 	border-radius: 5px;
 	width: 35px;
@@ -38,8 +39,9 @@ body {
 }
 
 .highlight_small_button:hover {
-	background-color: #AAAAAA;
+	background-color: #FFFFFF;
 }
+
 .playlist_button {
 	background-color: #333333;
 	border: none;
@@ -50,7 +52,21 @@ body {
 }
 
 .playlist_button:hover {
-	background-color: #777777;
+	background-color: gray;
+}
+
+.track_button {
+	background-color: transparent;
+	border: none;
+	border-radius: 10px;
+	width: 30px;
+	height: 25px;
+	color: white;
+}
+
+.track_button:hover {
+	background-color: white;
+	color: black;
 }
 
 select {
