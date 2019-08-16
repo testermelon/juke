@@ -52,6 +52,8 @@ let current_dir = "";
 
 //for bug in new playlist func. State for waiting reply from playlist_list
 let waiting_playlist_list = false;
+
+let wait_delete_playlist = false;
 //********************
 //User Actions
 //*********************

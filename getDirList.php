@@ -1,6 +1,11 @@
 <?php
 echo '<table style="width:100%">';
 $targetdir = rawurldecode($_GET['dir']);
+
+//handle bug regarding square brackets
+$targetdir = str_replace('[','\[',$targetdir);
+$targetdir = str_replace(']','\]',$targetdir);
+
 $file_list = glob($targetdir . "/*");
 foreach ($file_list as $filename){
 	$path = rawurlencode($filename);
