@@ -1,39 +1,41 @@
-
-<div style="display:grid;  grid-template-columns: 1fr; ">
-<?php 
+<?php
+echo '<table style="width:100%">';
 $targetdir = rawurldecode($_GET['dir']);
 $file_list = glob($targetdir . "/*");
 foreach ($file_list as $filename){
 	$path = rawurlencode($filename);
 	if(!is_dir($filename)) {
 		echo 
-		'<div class="list_item" style="width:100%;vertical-align:middle">
+		'<tr> ';
+		echo
+		'<td class="list_item"> 
 			<span style="float:left;vertical-align:middle">';
 		echo end(explode('/',$filename));
 		echo 
 			'</span>
-			<span style="float:right;vertical-align:middle">';
+			<span style="float:right">';
 		echo	"<button onclick=addFile(\"";
 		echo	"$path";
 		echo	"\") ";
 		echo 	'class="track_button">+</button> 
 			</span>
-		</div><br>';
+			</td></tr>';
 	}
 	else{
 		echo 	
-		'<div class="list_item" style="width:100%;vertical-align:middle" ';
+			'<tr>
+			<td class="list_item" ';
 		echo	"onclick=obtainDirList(\"";
 		echo	"$path";
 		echo	"\")>";
 		echo
-			'<span style="float:left;vertical-align:middle">';
+			'<span style="color:lightgreen;font-weight:normal;vertical-align:middle">';
 		echo end(explode('/',$filename));
 		echo 
 			'</span>
-		</div><br>';
+		</td></tr>';
 	}
 }
+echo '</table>';
 ?>
 
-</div>

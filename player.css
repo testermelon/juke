@@ -11,8 +11,11 @@ body {
 }
 
 
+.list_item{
+	height: 25px;
+}
 .list_item:hover {
-	background-color: #666666;
+	background-color: #444444;
 }
 
 .small_button {
@@ -25,7 +28,7 @@ body {
 }
 
 .small_button:hover {
-	background-color: #FFFFFF;
+	background-color: #AAAAAA;
 	color: black;
 }
 

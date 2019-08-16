@@ -59,8 +59,9 @@ let current_dir = "";
 function actionPlay(){
 
 	if (!is_playing) {
-		if(playlist_no == playlist_showing_no)
+		if(playlist_no == playlist_showing_no){
 			playerdom.play();
+		}
 		else{
 			playlist = playlist_showing;
 			playlist_no = playlist_showing_no;
@@ -76,6 +77,7 @@ function actionPlay(){
 }
 
 function actionStop(){
+
 	playerdom.pause();
 	playerdom.currentTime = 0;
 }
@@ -93,6 +95,9 @@ function actionNext(){
 
 		//playlist not changed
 		if (playlist_no == playlist_showing_no){  
+
+			//update playlist to accomodate any added or removed track
+			playlist = playlist_showing;
 
 			if (!shuffle){
 				// no shuffle set -> go to next track, 
@@ -137,6 +142,9 @@ function actionNext(){
 
 		//playlist has not changed
 		if (playlist_no == playlist_showing_no){
+
+			//update playlist to accomodate any added or removed track
+			playlist = playlist_showing;
 
 			//when not in repeat do not cycle, stop playback when end reached
 			if (!shuffle){
@@ -188,6 +196,9 @@ function actionPrev(){
 	if (repeat == 1){
 		//playlist has not changed
 		if (playlist_no == playlist_showing_no){
+			//update playlist to accomodate any added or removed track
+			playlist = playlist_showing;
+
 			if (!shuffle){
 				if (current_track > 0 )
 					current_track -= 1;
@@ -225,6 +236,9 @@ function actionPrev(){
 	if (repeat == 0){
 		//playlist has not changed
 		if (playlist_no == playlist_showing_no){
+			//update playlist to accomodate any added or removed track
+			playlist = playlist_showing;
+
 			if (!shuffle){
 				if (current_track > 0 )
 					current_track -= 1;
@@ -264,6 +278,9 @@ function actionPrev(){
 }
 
 function actionShuffle() {
+	//update playlist to accomodate any added or removed track
+	playlist = playlist_showing;
+
 	if (shuffle) {
 		shuffle = false;
 		document.getElementById("shuffle-button").className = "small_button";
@@ -276,6 +293,9 @@ function actionShuffle() {
 }
 
 function actionRepeat() {
+	//update playlist to accomodate any added or removed track
+	playlist = playlist_showing;
+
 	if (repeat == 0) {
 		repeat = 1;
 		document.getElementById("repeat-button").className = "highlight_small_button";
@@ -366,6 +386,9 @@ function playbackEnded() {
 	if (repeat == 1){
 		//playlist has not changed
 		if (playlist_no == playlist_showing_no){
+			//update playlist to accomodate any added or removed track
+			playlist = playlist_showing;
+
 			if(!shuffle){
 				if ( current_track < playlist.length -1)
 					current_track += 1;
@@ -404,6 +427,9 @@ function playbackEnded() {
 	if (repeat == 0) {
 		//playlist has not changed
 		if (playlist_no == playlist_showing_no){
+			//update playlist to accomodate any added or removed track
+			playlist = playlist_showing;
+
 			if(!shuffle){
 				if ( current_track < playlist.length -1)
 					current_track += 1;
