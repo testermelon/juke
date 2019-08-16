@@ -357,6 +357,14 @@ function actionTrackDelete(plno,trno){
 	delTrack(plno,trno);
 }
 
+function actionTrackClick(trno){
+	playlist = playlist_showing;
+	playlist_no = playlist_showing_no;
+	current_track = trno;
+	updateCurrentTrack();
+	updateShuffleList();
+	playerdom.play();
+}
 
 //event handlings
 //These are mostly event handlers, some of them are natural browser events, some of them are artifical events that needs to be triggered manually 
@@ -626,7 +634,7 @@ function showPlaylist(playlist_to_show){
 	let name = "";
 	for (let i=0;i<playlist_to_show.length;i++){
 		name = playlist_to_show[i].split("/").slice(-1)[0];
-		playlist_html += '<tr id="track_' + i + '">';
+		playlist_html += '<tr onclick=actionTrackClick('+i+') id="track_' + i + '">';
 		playlist_html += '<td class="list_item">';
 		playlist_html += '<span id="track_' + i + '_name" style="float:left; vertical-align: middle">';
 	
@@ -634,7 +642,7 @@ function showPlaylist(playlist_to_show){
 		playlist_html += '</span>';
 		playlist_html += '<span style="float:right">';
 		playlist_html += '<button onclick=actionTrackDelete(' + playlist_showing_no + ',' + i + ') class="track_button">x</button>';
-		playlist_html += '</span> </td?> </tr>';
+		playlist_html += '</span> </td> </tr>';
 	}
 	playlist_html += '</table>';
 	return playlist_html;
