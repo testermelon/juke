@@ -318,11 +318,13 @@ function actionRepeat() {
 
 function actionBrowserUp(){
 	let slice_dir = current_dir.split("%2F");
+	//pop away the current dir so it became upper dir
 	slice_dir.pop();
 	slice_dir.pop();
+	//Prevent access to gentiana
+	if(slice_dir[slice_dir.length-1] == "Gentiana") return;
 	let updir = slice_dir.join("%2F");
 	obtainDirList(updir); 
-	//TODO restrict going up from home
 }
 
 function volumeChange() {
