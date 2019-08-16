@@ -50,6 +50,8 @@ let playback_volume;
 //state variables of the browser
 let current_dir = "";
 
+//for bug in new playlist func. State for waiting reply from playlist_list
+let waiting_playlist_list = false;
 //********************
 //User Actions
 //*********************
@@ -335,7 +337,7 @@ function actionPlaylistNew(){
 }
 
 function actionRenamePlaylist() {
-	let name = prompt("Nama barunya apa?", "New Playlist");
+	let name = prompt("Nama barunya apa?", playlist_list[playlist_showing_no]);
 	if(name==null) return;
 	renamePlaylist(playlist_showing_no,name);
 }
@@ -542,6 +544,25 @@ function obtainPlaylistList() {
 			}
 			plselectdom.innerHTML = actions;
 
+			if(waiting_playlist_list){
+				plselectdom.value = playlist_list.length -1 ;
+				obtainPlaylist(playlist_list.length - 1);
+				waiting_playlist_list = false;
+			}
+
+			if(wait_delete_playlist > -1 ){
+				if(wait_delete_playlist > 0){
+					plselectdom.value = wait_delete_playlist - 1;
+					obtainPlaylist(wait_delete_playlist - 1);
+				}
+				else{
+					plselectdom.value = 0;
+					obtainPlaylist(0);
+				}
+
+				waiting_playlist_list = -1;
+			}
+
 		}
 	}
 	xhttp.open("GET","playlist.php?op=ls",true);
@@ -620,8 +641,8 @@ function newPlaylist(playlist_name) {
 	let xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
+			waiting_playlist_list = true;
 			obtainPlaylistList();
-
 		}
 	}
 	
@@ -635,11 +656,14 @@ function delPlaylist(plno) {
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			obtainPlaylistList();
+			wait_delete_playlist = plno;
 		}
 	}
 	
 	xhttp.open("GET","playlist.php?op=del&pl="+ plno,true);
 	xhttp.send();
+
+
 }
 
 function delTrack(plno,trno) {
