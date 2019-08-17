@@ -8,7 +8,8 @@ body {
 	background-color: #222222; 
 	color:white;
 	font-family: "Verdana", Helvetica, sans-serif;
-	font-size: 10pt;
+	font-size: 9pt;
+
 	
 }
 
@@ -25,6 +26,7 @@ body {
 .bottom-pane {
 	position: fixed;
 	bottom: 0;
+	height: 100px;
 	max-width: 960px;
 	width: 100%;
 	background-color: inherit;
@@ -39,15 +41,21 @@ body {
 	padding : 5px;
 }
 
+.control-line {
+	display:flex;
+	margin:10px;
+}
+
 .items_list {
 	margin:5px;
 	border-radius: 5px;
 	background-color:#333333; 
-	height: calc(100vh - 200px);
+	height: calc(100vh - 197px);
 	overflow-y:auto; 
 }
 
 .list_item{
+	overflow:ellipsis;
 	height: 25px;
 }
 
@@ -57,13 +65,15 @@ body {
 }
 
 .small_button {
+	margin: 1px;
 	background-color: #555555;
 	border: none;
 	border-radius: 5px;
-	width: 35px;
-	height: 25px;
+	width: 30px;
+	height: 20px;
 	color: white;
 	cursor: pointer;
+	font-size: 6pt;
 }
 
 .small_button:hover {
@@ -75,10 +85,11 @@ body {
 	background-color: #EEEEEE;
 	border: none;
 	border-radius: 5px;
-	width: 35px;
-	height: 25px;
+	width: 30px;
+	height: 20px;
 	color: #333333;
 	cursor: pointer;
+	font-size: 6pt;
 }
 
 .highlight_small_button:hover {
@@ -89,10 +100,11 @@ body {
 	background-color: #333333;
 	border: none;
 	border-radius: 5px;
-	width: 40px;
-	height: 25px;
+	width: 30px;
+	height: 20px;
 	color: white;
 	cursor: pointer;
+	font-size: 6pt;
 }
 
 .playlist_button:hover {
@@ -131,9 +143,5 @@ select {
 	font-weight: bold;
 }
 
-.volume{
-	vertical-align:middle;
-	width: calc(100vw - 300px);
-	max-width: 150px;
-}
+
 

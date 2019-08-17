@@ -65,27 +65,20 @@
 
 	<div class="bottom-pane">
 
-		<div style="margin:10px">
-			::
-			<span id="elapsed-time-text"> 00:00 </span> 
-				/ 
-			<span id="duration-text"> 00:00 </span>
-			::
-			<span id="track-name-text"></span>
+		<div class="control-line" >
+			<div id="track-name-text" style="flex:1; overflow: hidden;white-space:nowrap; text-overflow:ellipsis">Welcome to Fireberry Music Player!</div>
 		</div>
-
-		<div id="playback-control" style="margin:10px">
-			<span>
+		<div class="control-line">
 				<button class="small_button" id="play-button" 
 					onclick=actionPlay() > 
 					&gt 
 				</button>
-
+<!--
 				<button class="small_button" id="stop-button" 
 					onclick=actionStop() > 
 					[ ] 
 				</button>
-
+-->
 				<button class="small_button" id="prev-button" 
 					onclick=actionPrev() > 
 					&lt&lt 
@@ -105,22 +98,24 @@
 					onclick=actionRepeat() > 
 					R
 				</button>
-			</span>
+			
+			<input id="volume-slider" type="range" 
+				min="0" max="1" step="0.01"  value="0.2"
+				style="flex:1"
+				onchange=volumeChange() >
+			</input>
+		</div>
 
-			<span>
-				<input id="volume-slider" type="range" 
-					min="0" max="1" step="0.01"  value="0.2"
-				  	class="volume"
-					onchange=volumeChange() >
-				</input>
-			</span>
-		</div><!-- playback-control-->
+		<div class="control-line"> 
 
-		<div style="margin-top:10px;margin-bottom:10px">
+			<span id="elapsed-time-text"> 00:00 </span>
+			
 			<input id="seekbar" type="range" value="0"
 				onchange=playerSeek()
-				style="width:95%;vertical-align:middle">
+				style="flex: 1; vertical-align:middle">
 			</input>
+			<span id="duration-text"> 00:00 </span>
+
 		</div>
 	</div><!--bottom-pane -->	
 	
