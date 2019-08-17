@@ -5,7 +5,6 @@ html {
 body {
 	max-width: 960px;
 	margin: auto;
-	background-color: #222222; 
 	color:white;
 	font-family: "Verdana", Helvetica, sans-serif;
 	font-size: 9pt;
@@ -14,22 +13,19 @@ body {
 }
 
 .top-pane {
+	position:fixed;
 	top: 0;
-	left: 10px;
 	margin-bottom: 100px;
 	max-width: 960px;
+	width: 100%;
 	overflow-y: auto;
-	column-count: 2;
-	column-gap: 0;
+	display:flex;
 }
 
-.bottom-pane {
-	position: fixed;
-	bottom: 0;
-	height: 100px;
-	max-width: 960px;
-	width: 100%;
-	background-color: inherit;
+.panel {
+	flex: 1;
+	border-radius: 5px;
+	width: 1fr;
 }
 
 .pane {
@@ -55,14 +51,40 @@ body {
 }
 
 .list_item{
-	overflow:ellipsis;
 	height: 25px;
+	display: flex;
+	justify-content: space-between;
+	align-content: center;
+
 }
 
 .list_item:hover {
 	background-color: #444444;
-	cursor: pointer;
 }
+
+.list-item-name {
+	flex: 1;
+	margin: 5px;
+	max-width: calc(45vw - 25px);
+	overflow:hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.list-item-name:hover {
+	cursor:pointer;
+}
+
+
+.bottom-pane {
+	position: fixed;
+	bottom: 0;
+	height: 100px;
+	max-width: 960px;
+	width: 100%;
+	background-color: inherit;
+}
+
 
 .small_button {
 	margin: 1px;
@@ -77,12 +99,13 @@ body {
 }
 
 .small_button:hover {
-	background-color: #AAAAAA;
+	background-color: #BBBBBB;
 	color: black;
 }
 
 .highlight_small_button {
-	background-color: #EEEEEE;
+	margin: 1px;
+	background-color: #FFFFFF;
 	border: none;
 	border-radius: 5px;
 	width: 30px;
@@ -90,10 +113,6 @@ body {
 	color: #333333;
 	cursor: pointer;
 	font-size: 6pt;
-}
-
-.highlight_small_button:hover {
-	background-color: #FFFFFF;
 }
 
 .playlist_button {

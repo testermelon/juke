@@ -11,55 +11,54 @@
 	<script src="player.js"></script>
 
 	<div class="top-pane">
-<!--
-	<div style="display:grid; grid-gap:5px; grid-template-columns: 1fr 1fr; ">
-		-->
-	<div class="panel">
-		<div class="pane-title" style="text-align:center">
-			Browser
-		</div>
 
-		<div class="pane">
-			<button onclick=actionBrowserUp() class="playlist_button">Up</button>
-		</div>
+		<div class="panel">
+			<div class="pane-title" style="text-align:center">
+				Browser
+			</div>
 
-		<div class="pane">
-			<select id="currentdir" style="width:100%">
-				<option>/</option>
-			</select>
+			<div class="pane">
+				<button onclick=actionBrowserUp() class="playlist_button">Up</button>
+			</div>
 
-		</div>
+			<div class="pane">
+				<select id="currentdir" style="width:100%">
+					<option>/</option>
+				</select>
 
-		<div id="filelist" class="items_list">
+			</div>
 
-		</div>
+			<div id="filelist" class="items_list">
 
-
-
-		<div class="pane-title" style="text-align: center">
-			Playlist
-		</div>
-
-		<div class="pane">
-			<button onclick=actionPlaylistNew() class="playlist_button">New</button>
-			<button onclick=clearPlaylist(playlist_showing_no) class="playlist_button">Clr</button>
-			<button onclick=actionRenamePlaylist() class="playlist_button">Ren</button>
-			<button onclick=actionPlaylistDelete() class="playlist_button">Del</button>
-
-		</div>
-
-		<div class="pane">
-			<select id="playlist-select" 
-				onchange=obtainPlaylist(this.value)
-				style="width:100%">
-			</select>
+			</div>
 		</div>
 
 
-		<div id="tracklist" class="items_list">
+		<div class="panel">
+			<div class="pane-title" style="text-align: center">
+				Playlist
+			</div>
 
-		</div><!--tracklist-->
-	</div>
+			<div class="pane">
+				<button onclick=actionPlaylistNew() class="playlist_button">New</button>
+				<button onclick=clearPlaylist(playlist_showing_no) class="playlist_button">Clr</button>
+				<button onclick=actionRenamePlaylist() class="playlist_button">Ren</button>
+				<button onclick=actionPlaylistDelete() class="playlist_button">Del</button>
+
+			</div>
+
+			<div class="pane">
+				<select id="playlist-select" 
+					onchange=obtainPlaylist(this.value)
+					style="width:100%">
+				</select>
+			</div>
+
+
+			<div id="tracklist" class="items_list">
+
+			</div><!--tracklist-->
+		</div>
 
 	</div><!--top-pane-->
 
