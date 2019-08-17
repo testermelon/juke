@@ -8,12 +8,15 @@ body {
 	color:white;
 	font-family: "Verdana", Helvetica, sans-serif;
 	font-size: 9pt;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 
 	
 }
 
 .top-pane {
-	position:fixed;
+	flex:1;
 	top: 0;
 	margin-bottom: 100px;
 	max-width: 960px;
@@ -25,7 +28,6 @@ body {
 .panel {
 	flex: 1;
 	border-radius: 5px;
-	width: 1fr;
 }
 
 .pane {
@@ -152,7 +154,7 @@ select {
 	-moz-appearance: none;
 	appearance: none;
 	border-radius: 5px;
-	height: 25px;
+	height: 20px;
 	color: white;
 	cursor: pointer;
 }
@@ -163,4 +165,7 @@ select {
 }
 
 
+@media only screen and (max-width:600px){
+}
 
+	.

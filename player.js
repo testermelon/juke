@@ -595,21 +595,6 @@ function obtainPlaylist(pl_number) {
 	xhttp.send();
 }
 
-//obtain playlist from server and show it to playlist pane
-// dirname should be URL safe
-//
-function obtainDirList(dirname) {
-	let xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			document.getElementById("filelist").innerHTML = this.responseText;
-			current_dir = dirname + "%2F";
-		}
-	}
-	xhttp.open("GET","getDirList.php?dir="+dirname,true);
-	xhttp.send();
-}
-
 
 function addFile(path) {
 	let xhttp = new XMLHttpRequest();
@@ -713,5 +698,101 @@ function renamePlaylist(plno,name) {
 	xhttp.send();
 }
 //execution scripts 
+
+//obtain playlist from server and show it to playlist pane
+// dirname should be URL safe
+//
+function obtainDirList(dirname) {
+	let xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			let dir_data = JSON.parse(this.responseText);
+
+			let playlist_html = '<div style="width:100%">';
+			let name = "";
+			for (let i=0;i<dir_data.dir.length;i++){
+				name = decodeURIComponent(dir_data.dir[i].split("%2F").slice(-1)[0]);
+				playlist_html += '<div class="list_item">';
+				playlist_html += '<div class="list-item-name" style="color:lightgreen" onclick=obtainDirList(\"'+dir_data.dir[i]+'\") >';
+				playlist_html += name;
+				playlist_html += '</div>';
+				playlist_html += '</div>';
+			}
+
+			for (let i=0;i<dir_data.file.length;i++){
+				name = decodeURIComponent(dir_data.file[i].split("%2F").slice(-1)[0]);
+				playlist_html += '<div class="list_item">';
+				playlist_html += '<div class="list-item-name" >';
+				playlist_html += name;
+				playlist_html += '</div>';
+				playlist_html += '<button onclick=addFile(\"' + dir_data.file[i] + ') class="track_button">+</button>';
+				playlist_html += '</div>';
+			}
+			document.getElementById("filelist").innerHTML = playlist_html;
+			current_dir = dirname + "%2F";
+			document.getElementById("currentdir").innerHTML = "<option>" + decodeURIComponent(current_dir).replace('../firedrives/Gentiana/Music','') + "</option>";
+		}
+	}
+	xhttp.open("GET","getDirList.php?dir="+dirname,true);
+	xhttp.send();
+}
+
+/*
+foreach ($file_list as $filename){
+	$path = rawurlencode($filename);
+	if(!is_dir($filename)) {
+		echo 
+		'<tr> ';
+		echo
+		'<td class="list_item"> 
+			<span style="float:left;vertical-align:middle">';
+		echo end(explode('/',$filename));
+		echo 
+			'</span>
+			<span style="float:right">';
+		echo	"<button onclick=addFile(\"";
+		echo	"$path";
+		echo	"\") ";
+		echo 	'class="track_button">+</button> 
+			</span>
+			</td></tr>';
+	}
+	else{
+		echo 	
+			'<tr>
+			<td class="list_item" ';
+		echo	"onclick=obtainDirList(\"";
+		echo	"$path";
+		echo	"\")>";
+		echo
+			'<span style="color:lightgreen;font-weight:normal;vertical-align:middle">';
+		echo end(explode('/',$filename));
+		echo 
+			'</span>
+		</td></tr>';
+	}
+}*/
+
+function mediaListener(x) {
+	if(x.matches){
+		//bigger than 600px wide
+		
+		//show all panes, hide tab buttons
+		document.body.style.backgroundColor = "yellow";
+	}
+	else{
+		//smaller than 600px wide
+		document.body.style.backgroundColor = "black";
+		
+		//hide browser pane, show tab buttons
+//		document.getElementById("browser-pane").style.display = "none";
+//		document.getElementById("playlist-pane-title").style.display = "initial";
+//		document.getElementById("pane-select-buttons").style.display = "flex";
+	}
+}
+
+let mediaEv = window.matchMedia("(min-width:400px)");
+mediaListener(mediaEv);
+mediaEv.addListener(mediaListener);
 
 window.addEventListener("DOMContentLoaded", initPlayer);
