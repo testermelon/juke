@@ -1,5 +1,5 @@
 html {
-	background-color: #111111;
+	background-color: #191919;
 }
 
 body {
@@ -20,11 +20,16 @@ body {
 	cursor: pointer;
 }
 
+#pane-select-buttons > div {
+	padding: 15px;
+}
+
+
 
 .top-pane {
 	flex:1;
 	top: 0;
-	margin-bottom: 100px;
+/*	margin-bottom: 100px;*/
 	max-width: 960px;
 	width: 100%;
 	overflow-y: auto;
@@ -54,7 +59,7 @@ body {
 	margin:5px;
 	border-radius: 5px;
 	background-color:#333333; 
-	height: calc(100vh - 197px);
+	height: calc(100vh - 270px);
 	overflow-y:auto; 
 }
 
@@ -85,8 +90,8 @@ body {
 
 
 .bottom-pane {
-	position: fixed;
-	bottom: 0;
+/*	position: fixed;
+	bottom: 0;*/
 	height: 100px;
 	max-width: 960px;
 	width: 100%;
@@ -171,9 +176,14 @@ select {
 }
 
 
+@media only screen and (min-width:960px){
+.list-item-name {
+	max-width: 450px;
+}
+}
+
 @media only screen and (max-width:500px){
 .list-item-name {
 	max-width: calc(90vw - 25px);
 }
 }
-

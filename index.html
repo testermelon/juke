@@ -10,7 +10,7 @@
 
 	<script src="player.js"></script>
 
-	<div id="pane-select-buttons" style="display:flex; height:24pt; width:100%">
+	<div id="pane-select-buttons" style="display:flex; width:100%">
 
 		<div class="pane-title" id="pane-select-browser" style="flex: 1; text-align:center"
 			onclick=actionSwitchPane("browser") >
@@ -52,10 +52,10 @@
 				Playlist
 			</div>
 
-			<div class="pane">
+			<div class="pane" >
 				<button onclick=actionPlaylistNew() class="playlist_button">New</button>
-				<button onclick=clearPlaylist(playlist_showing_no) class="playlist_button">Clr</button>
 				<button onclick=actionRenamePlaylist() class="playlist_button">Ren</button>
+				<button onclick=clearPlaylist(playlist_showing_no) class="playlist_button">Clr</button>
 				<button onclick=actionPlaylistDelete() class="playlist_button">Del</button>
 
 			</div>

@@ -499,10 +499,13 @@ function updateElapsed() {
 	for (let i=0;i<playlist.length;i++){
 		id = "track_" + i;
 		if (i==current_track){
-			document.getElementById(id).className = "item_playing";
+			document.getElementById(id).style.color = "yellow";
+			document.getElementById(id).style.fontWeight = "bold";
 		}
-		else 
-			document.getElementById(id).className = "";
+		else{ 
+			document.getElementById(id).style.color = "white";
+			document.getElementById(id).style.fontWeight = "normal";
+		}
 	}
 }
 
@@ -573,7 +576,7 @@ function obtainPlaylistList() {
 					obtainPlaylist(0);
 				}
 
-				waiting_playlist_list = -1;
+				wait_delete_playlist = -1;
 			}
 
 		}
@@ -581,6 +584,8 @@ function obtainPlaylistList() {
 	xhttp.open("GET","playlist.php?op=ls",true);
 	xhttp.send();
 }
+
+
 //obtain playlist from server and show it to playlist pane
 //
 function obtainPlaylist(pl_number) {
@@ -596,6 +601,23 @@ function obtainPlaylist(pl_number) {
 	xhttp.send();
 }
 
+//show a playlist to the playlist pane
+function showPlaylist(playlist_to_show){
+	let playlist_html = '<div style="width:100%">';
+	let name = "";
+	for (let i=0;i<playlist_to_show.length;i++){
+		name = playlist_to_show[i].split("/").slice(-1)[0];
+		playlist_html += '<div class="list_item">';
+		playlist_html += '<div class="list-item-name" onclick=actionTrackClick('+i+') id="track_' + i +'" >';
+		playlist_html += name;
+		playlist_html += '</div>';
+		playlist_html += '<button onclick=actionTrackDelete(' + playlist_showing_no + ',' + i + ') class="track_button">x</button>';
+		playlist_html += '</div>';
+	}
+	playlist_html += '</div>';
+	return playlist_html;
+}
+	
 
 function addFile(path) {
 	let xhttp = new XMLHttpRequest();
@@ -613,24 +635,6 @@ function addFile(path) {
 	xhttp.send();
 }
 
-
-//show a playlist to the playlist pane
-function showPlaylist(playlist_to_show){
-	let playlist_html = '<div style="width:100%">';
-	let name = "";
-	for (let i=0;i<playlist_to_show.length;i++){
-		name = playlist_to_show[i].split("/").slice(-1)[0];
-		playlist_html += '<div class="list_item">';
-		playlist_html += '<div class="list-item-name" onclick=actionTrackClick('+i+') id="track_' + i + '_name" >';
-		playlist_html += name;
-		playlist_html += '</div>';
-		playlist_html += '<button onclick=actionTrackDelete(' + playlist_showing_no + ',' + i + ') class="track_button">x</button>';
-		playlist_html += '</div>';
-	}
-	playlist_html += '</div>';
-	return playlist_html;
-}
-	
 
 function newPlaylist(playlist_name) {
 	let xhttp = new XMLHttpRequest();
@@ -698,7 +702,6 @@ function renamePlaylist(plno,name) {
 	xhttp.open("GET","playlist.php?op=ren&pl="+ plno + "&n=" + name,true);
 	xhttp.send();
 }
-//execution scripts 
 
 //obtain playlist from server and show it to playlist pane
 // dirname should be URL safe
@@ -781,6 +784,7 @@ function mediaListener(x) {
 		//show all panes, hide tab buttons
 		document.getElementById("pane-select-buttons").style.display = "none";
 		document.getElementById("browser-pane").style.display = "block";
+		document.getElementById("playlist-pane").style.display = "block";
 		document.getElementById("browser-pane-title").style.display = "block";
 		document.getElementById("playlist-pane-title").style.display = "block";
 	}
@@ -826,6 +830,10 @@ function actionSwitchPane(target){
 	}
 }
 
+
+
+
+//execution scripts 
 
 let mediaEv = window.matchMedia("(min-width:500px)");
 mediaEv.addListener(mediaListener);
