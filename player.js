@@ -371,6 +371,7 @@ function actionTrackClick(trno){
 
 //Called on DOM loaded event
 function initPlayer() {
+	mediaListener(mediaEv);
 	playerdom = document.getElementById("player");
 	seekbardom = document.getElementById("seekbar");
 	volumedom = document.getElementById("volume-slider");
@@ -725,7 +726,7 @@ function obtainDirList(dirname) {
 				playlist_html += '<div class="list-item-name" >';
 				playlist_html += name;
 				playlist_html += '</div>';
-				playlist_html += '<button onclick=addFile(\"' + dir_data.file[i] + ') class="track_button">+</button>';
+				playlist_html += '<button onclick=addFile(\"' + dir_data.file[i] + '\") class="track_button">+</button>';
 				playlist_html += '</div>';
 			}
 			document.getElementById("filelist").innerHTML = playlist_html;
@@ -775,24 +776,58 @@ foreach ($file_list as $filename){
 
 function mediaListener(x) {
 	if(x.matches){
-		//bigger than 600px wide
+		//bigger than xxx px wide
 		
 		//show all panes, hide tab buttons
-		document.body.style.backgroundColor = "yellow";
+		document.getElementById("pane-select-buttons").style.display = "none";
+		document.getElementById("browser-pane").style.display = "block";
+		document.getElementById("browser-pane-title").style.display = "block";
+		document.getElementById("playlist-pane-title").style.display = "block";
 	}
 	else{
-		//smaller than 600px wide
-		document.body.style.backgroundColor = "black";
+		//smaller than xxx px wide
 		
 		//hide browser pane, show tab buttons
-//		document.getElementById("browser-pane").style.display = "none";
-//		document.getElementById("playlist-pane-title").style.display = "initial";
-//		document.getElementById("pane-select-buttons").style.display = "flex";
+		document.getElementById("browser-pane").style.display = "none";
+		document.getElementById("browser-pane-title").style.display = "none";
+		document.getElementById("playlist-pane-title").style.display = "none";
+		document.getElementById("pane-select-buttons").style.display = "flex";
+
+		//set style for selected pane
+		document.getElementById("pane-select-playlist").style.color = "white";
+		document.getElementById("pane-select-browser").style.color = "dimgrey";
+		document.getElementById("pane-select-playlist").style.backgroundColor = "unset";
+		document.getElementById("pane-select-browser").style.backgroundColor = "black";
 	}
 }
 
-let mediaEv = window.matchMedia("(min-width:400px)");
-mediaListener(mediaEv);
+function actionSwitchPane(target){
+	if(target == "playlist"){
+		//hide browser pane, show tab buttons
+		document.getElementById("browser-pane").style.display = "none";
+		document.getElementById("playlist-pane").style.display = "block";
+
+		//set style for selected pane
+		document.getElementById("pane-select-playlist").style.color = "white";
+		document.getElementById("pane-select-browser").style.color = "dimgrey";
+		document.getElementById("pane-select-playlist").style.backgroundColor = "unset";
+		document.getElementById("pane-select-browser").style.backgroundColor = "black";
+	}
+	else{
+		//hide playlist pane, show tab buttons
+		document.getElementById("browser-pane").style.display = "block";
+		document.getElementById("playlist-pane").style.display = "none";
+
+		//set style for selected pane
+		document.getElementById("pane-select-playlist").style.color = "dimgrey";
+		document.getElementById("pane-select-browser").style.color = "white";
+		document.getElementById("pane-select-playlist").style.backgroundColor = "black";
+		document.getElementById("pane-select-browser").style.backgroundColor = "unset";
+	}
+}
+
+
+let mediaEv = window.matchMedia("(min-width:500px)");
 mediaEv.addListener(mediaListener);
 
 window.addEventListener("DOMContentLoaded", initPlayer);

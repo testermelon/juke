@@ -15,6 +15,12 @@ body {
 	
 }
 
+#pane-select-buttons > div:hover {
+	font-weight: bold;
+	cursor: pointer;
+}
+
+
 .top-pane {
 	flex:1;
 	top: 0;
@@ -35,7 +41,7 @@ body {
 }
 
 .pane-title {
-	border-radius: 5px;
+	text-align: center;
 	padding : 5px;
 }
 
@@ -165,7 +171,9 @@ select {
 }
 
 
-@media only screen and (max-width:600px){
+@media only screen and (max-width:500px){
+.list-item-name {
+	max-width: calc(90vw - 25px);
+}
 }
 
-	.
