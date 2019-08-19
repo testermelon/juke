@@ -287,11 +287,13 @@ function actionShuffle() {
 
 	if (shuffle) {
 		shuffle = false;
-		document.getElementById("shuffle-button").className = "small_button";
+		document.getElementById("shuffle-button-on").className = "small_button";
+		document.getElementById("shuffle-button-on").id = "shuffle-button";
 	}
 	else{
 		shuffle = true;
 		document.getElementById("shuffle-button").className = "highlight_small_button";
+		document.getElementById("shuffle-button").id = "shuffle-button-on";
 		updateShuffleList();
 	}
 }
@@ -303,17 +305,20 @@ function actionRepeat() {
 	if (repeat == 0) {
 		repeat = 1;
 		document.getElementById("repeat-button").className = "highlight_small_button";
+		document.getElementById("repeat-button").id = "repeat-button-on";
+
 	}
 	else
 	if (repeat == 1){
 		repeat = 2;
-		document.getElementById("repeat-button").className = "highlight_small_button";
-		document.getElementById("repeat-button").innerHTML = "R1";
+		document.getElementById("repeat-button-on").className = "highlight_small_button";
+		document.getElementById("repeat-button-on").innerHTML = "1";
 	}
 	else{
 		repeat = 0;
-		document.getElementById("repeat-button").className = "small_button";
-		document.getElementById("repeat-button").innerHTML = "R";
+		document.getElementById("repeat-button-on").className = "small_button";
+		document.getElementById("repeat-button-on").innerHTML = "";
+		document.getElementById("repeat-button-on").id = "repeat-button";
 	}
 
 }
@@ -385,13 +390,13 @@ function initPlayer() {
 
 function playbackPlayed() {
 	is_playing = true;
-	document.getElementById("play-button").innerHTML = "||";
+	document.getElementById("play-button").id = "pause-button"
 	setTimeout(updateElapsed,50);
 }
 
 function playbackPaused() {
 	is_playing = false;
-	document.getElementById("play-button").innerHTML = "&gt";
+	document.getElementById("pause-button").id = "play-button";
 	setTimeout(updateElapsed,50);
 }
 
@@ -717,8 +722,8 @@ function obtainDirList(dirname) {
 			for (let i=0;i<dir_data.dir.length;i++){
 				name = decodeURIComponent(dir_data.dir[i].split("%2F").slice(-1)[0]);
 				playlist_html += '<div class="list_item">';
-				playlist_html += '<div class="list-item-name" style="color:lightgreen" onclick=obtainDirList(\"'+dir_data.dir[i]+'\") >';
-				playlist_html += name;
+				playlist_html += '<div class="list-item-name" style="color:lawngreen" onclick=obtainDirList(\"'+dir_data.dir[i]+'\") >';
+				playlist_html += '&#x21b3; ' + name;
 				playlist_html += '</div>';
 				playlist_html += '</div>';
 			}

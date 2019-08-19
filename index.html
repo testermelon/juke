@@ -31,7 +31,10 @@
 			</div>
 
 			<div class="pane">
-				<button onclick=actionBrowserUp() class="playlist_button">Up</button>
+				<button id="up-button" onclick=actionBrowserUp() class="playlist_button"></button>
+				<button id="back-button" onclick=actionBrowserUp() class="playlist_button"></button>
+				<button id="forward-button" onclick=actionBrowserUp() class="playlist_button"></button>
+				<button id="home-button" onclick=actionBrowserUp() class="playlist_button"></button>
 			</div>
 
 			<div class="pane">
@@ -53,10 +56,10 @@
 			</div>
 
 			<div class="pane" >
-				<button onclick=actionPlaylistNew() class="playlist_button">New</button>
-				<button onclick=actionRenamePlaylist() class="playlist_button">Ren</button>
-				<button onclick=clearPlaylist(playlist_showing_no) class="playlist_button">Clr</button>
-				<button onclick=actionPlaylistDelete() class="playlist_button">Del</button>
+				<button id="new-button" onclick=actionPlaylistNew() class="playlist_button"></button>
+				<button id="rename-button" onclick=actionRenamePlaylist() class="playlist_button"></button>
+				<button id="clear-button" onclick=clearPlaylist(playlist_showing_no) class="playlist_button"></button>
+				<button id="delete-button" onclick=actionPlaylistDelete() class="playlist_button"></button>
 
 			</div>
 
@@ -78,42 +81,36 @@
 	<div class="bottom-pane">
 
 		<div class="control-line" >
-			<div id="track-name-text" style="flex:1; overflow: hidden;white-space:nowrap; text-overflow:ellipsis">Welcome to Fireberry Music Player!</div>
+			<div id="track-name-text" style="flex:1; overflow: hidden;white-space:nowrap; text-overflow:ellipsis; color: khaki">Welcome to Fireberry Music Player!</div>
 		</div>
 		<div class="control-line">
 				<button class="small_button" id="play-button" 
 					onclick=actionPlay() > 
-					&gt 
 				</button>
 <!--
 				<button class="small_button" id="stop-button" 
 					onclick=actionStop() > 
-					[ ] 
 				</button>
 -->
 				<button class="small_button" id="prev-button" 
 					onclick=actionPrev() > 
-					&lt&lt 
 				</button>
 
 				<button class="small_button" id="next-button" 
 					onclick=actionNext(true) > 
-					&gt&gt  
 				</button>
 
 				<button class="small_button" id="shuffle-button"
 					onclick=actionShuffle() > 
-					S
 				</button>
 
 				<button class="small_button" id="repeat-button"
 					onclick=actionRepeat() > 
-					R
 				</button>
 			
 			<input id="volume-slider" type="range" 
 				min="0" max="1" step="0.01"  value="0.2"
-				style="flex:1"
+				style="flex:1; max-width: 150px; margin:5px;display:inline-block; vertical-align:middle"
 				onchange=volumeChange() >
 			</input>
 		</div>

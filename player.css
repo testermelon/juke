@@ -1,5 +1,5 @@
 html {
-	background-color: #191919;
+	background-color: black;
 }
 
 body {
@@ -7,8 +7,9 @@ body {
 	margin: auto;
 	color:white;
 	font-family: "Verdana", Helvetica, sans-serif;
-	font-size: 9pt;
+	font-size: 12pt;
 	display: flex;
+	background-color: #1F1F1F;
 	flex-direction: column;
 	justify-content: space-between;
 
@@ -16,7 +17,6 @@ body {
 }
 
 #pane-select-buttons > div:hover {
-	font-weight: bold;
 	cursor: pointer;
 }
 
@@ -64,7 +64,6 @@ body {
 }
 
 .list_item{
-	height: 25px;
 	display: flex;
 	justify-content: space-between;
 	align-content: center;
@@ -92,51 +91,169 @@ body {
 .bottom-pane {
 /*	position: fixed;
 	bottom: 0;*/
-	height: 100px;
+	margin:5px;
+	border-radius: 5px;
+	height: 110px;
 	max-width: 960px;
-	width: 100%;
-	background-color: inherit;
+	background-color: #333333;
+}
+
+#play-button {
+	background-image: url('icons/wh-play-50.png');
+}
+#play-button:hover {
+	background-image: url('icons/bk-play-50.png');
+}
+
+#next-button {
+	background-image: url('icons/wh-fast-forward-50.png');
+}
+#next-button:hover {
+	background-image: url('icons/bk-fast-forward-50.png');
+}
+
+#prev-button {
+	background-image: url('icons/wh-rewind-50.png');
+}
+#prev-button:hover {
+	background-image: url('icons/bk-rewind-50.png');
+}
+
+#shuffle-button {
+	background-image: url('icons/wh-shuffle-50.png');
+}
+#shuffle-button:hover {
+	background-image: url('icons/bk-shuffle-50.png');
+}
+
+#shuffle-button-on {
+	background-image: url('icons/bk-shuffle-50.png');
+}
+#shuffle-butto-on:hover {
+	background-image: url('icons/wh-shuffle-50.png');
+}
+
+#repeat-button {
+	background-image: url('icons/wh-repeat-50.png');
+}
+#repeat-button:hover {
+	background-image: url('icons/bk-repeat-50.png');
+}
+
+#repeat-button-on {
+	background-image: url('icons/bk-repeat-50.png');
+}
+#repeat-button-on:hover {
+	background-image: url('icons/bk-repeat-50.png');
+}
+#pause-button {
+	background-image: url('icons/wh-pause-50.png');
+}
+#pause-button:hover {
+	background-image: url('icons/bk-pause-50.png');
 }
 
 
 .small_button {
 	margin: 1px;
-	background-color: #555555;
+	background-color: #444444;
+	background-size: 60%;
+	background-repeat: no-repeat;
+	background-position: center center;
 	border: none;
 	border-radius: 5px;
-	width: 30px;
-	height: 20px;
+	width: 50px;
+	height: 30px;
 	color: white;
 	cursor: pointer;
-	font-size: 6pt;
 }
 
 .small_button:hover {
-	background-color: #BBBBBB;
+	background-color: #999999;
 	color: black;
 }
 
 .highlight_small_button {
 	margin: 1px;
 	background-color: #FFFFFF;
+	background-size: 60%;
+	background-repeat: no-repeat;
+	background-position: center center;
 	border: none;
 	border-radius: 5px;
-	width: 30px;
-	height: 20px;
+	width: 50px;
+	height: 30px;
 	color: #333333;
 	cursor: pointer;
-	font-size: 6pt;
 }
+
+#new-button {
+	background-image: url('icons/wh-add-file-50.png');
+}
+#new-button:hover {
+	background-image: url('icons/bk-add-file-50.png');
+}
+
+#rename-button {
+	background-image: url('icons/wh-rename-50.png');
+}
+#rename-button:hover {
+	background-image: url('icons/bk-rename-50.png');
+}
+
+#clear-button {
+	background-image: url('icons/wh-broom-50.png');
+}
+#clear-button:hover {
+	background-image: url('icons/bk-broom-50.png');
+}
+
+#delete-button {
+	background-image: url('icons/wh-trash-50.png');
+}
+#delete-button:hover {
+	background-image: url('icons/bk-trash-50.png');
+}
+
+#up-button {
+	background-image: url('icons/wh-double-up-50.png');
+}
+#up-button:hover {
+	background-image: url('icons/bk-double-up-50.png');
+}
+
+#back-button {
+	background-image: url('icons/wh-double-left-50.png');
+}
+#back-button:hover {
+	background-image: url('icons/bk-double-left-50.png');
+}
+
+#forward-button {
+	background-image: url('icons/wh-double-right-50.png');
+}
+#forward-button:hover {
+	background-image: url('icons/bk-double-right-50.png');
+}
+
+#home-button {
+	background-image: url('icons/wh-home-50.png');
+}
+#home-button:hover {
+	background-image: url('icons/bk-home-50.png');
+}
+
 
 .playlist_button {
 	background-color: #333333;
+	background-size: 40%;
+	background-repeat: no-repeat;
+	background-position: center center;
 	border: none;
 	border-radius: 5px;
-	width: 30px;
-	height: 20px;
-	color: white;
+	width: 50px;
+	height: 30px;
 	cursor: pointer;
-	font-size: 6pt;
 }
 
 .playlist_button:hover {
@@ -165,7 +282,7 @@ select {
 	-moz-appearance: none;
 	appearance: none;
 	border-radius: 5px;
-	height: 20px;
+	height: 30px;
 	color: white;
 	cursor: pointer;
 }
