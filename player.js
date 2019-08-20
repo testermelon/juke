@@ -359,6 +359,7 @@ function actionPlaylistDelete(){
 
 function actionTrackDelete(plno,trno){
 	delTrack(plno,trno);
+	if(current_track >= trno) current_track -= 1;	//shift tracks after deletion
 }
 
 function actionTrackClick(trno){
@@ -495,14 +496,14 @@ function updateElapsed() {
 	seekbardom.value = playerdom.currentTime;
 	document.getElementById("duration-text").innerHTML = formatTime(playerdom.duration);
 	seekbardom.max = playerdom.duration;
-	if (is_playing)
-		setTimeout(updateElapsed,50);
-	document.getElementById("track-name-text").innerHTML = playlist[current_track].split("/").slice(-1)[0];
+	let displayed_name = document.getElementById("track-name-text").innerHTML = playlist[current_track].split("/").slice(-1)[0];
+
+	//find and mark the track that matches the currently playing song
 	let id;
 	if(playlist_no == playlist_showing_no)
 	for (let i=0;i<playlist.length;i++){
 		id = "track_" + i;
-		if (i==current_track){
+		if (i==current_track && displayed_name == document.getElementById(id).innerHTML){
 			document.getElementById(id).style.color = "yellow";
 			document.getElementById(id).style.fontWeight = "bold";
 		}
@@ -511,6 +512,8 @@ function updateElapsed() {
 			document.getElementById(id).style.fontWeight = "normal";
 		}
 	}
+	if (is_playing)
+		setTimeout(updateElapsed,50);
 }
 
 function updateCurrentTrack(){
