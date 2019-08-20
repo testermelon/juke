@@ -354,8 +354,7 @@ function actionRenamePlaylist() {
 
 function actionPlaylistDelete(){
 	let okay = confirm("Hapus playlist " + playlist_list[playlist_showing_no] + "?" );
-	if(okay==null) return;
-	delPlaylist(playlist_showing_no);
+	if(okay) delPlaylist(playlist_showing_no);
 }
 
 function actionTrackDelete(plno,trno){
