@@ -54,6 +54,13 @@ let current_dir = "";
 let waiting_playlist_list = false;
 
 let wait_delete_playlist = false;
+
+//browser history
+//in two parts: back and forward
+//push on each browse traverse 
+//   back[]  <--> current_dir <--> forward[]
+let browser_history_back = [];
+let browser_history_forward = [];
 //********************
 //User Actions
 //*********************
@@ -324,6 +331,8 @@ function actionRepeat() {
 }
 
 function actionBrowserUp(){
+	browser_history_back.push(current_dir);
+	browser_history_forward = [];
 	let slice_dir = current_dir.split("%2F");
 	//pop away the current dir so it became upper dir
 	slice_dir.pop();
@@ -332,6 +341,42 @@ function actionBrowserUp(){
 	if(slice_dir[slice_dir.length-1] == "Gentiana") return;
 	let updir = slice_dir.join("%2F");
 	obtainDirList(updir); 
+}
+
+function actionBrowserHome(){
+	obtainDirList(playlist_home); 
+}
+
+function actionBrowserItemClick(dir) {
+	browser_history_back.push(current_dir);
+	browser_history_forward = [];
+	obtainDirList(dir); 
+}
+
+function actionBrowserBack() {
+	let back_dir = browser_history_back.pop();
+	if (back_dir == undefined) return;
+
+	//slice out trailing slash
+	let slice_dir = back_dir.split("%2F");
+	slice_dir.pop();
+	back_dir = slice_dir.join("%2F");
+
+	browser_history_forward.push(current_dir);
+	obtainDirList(back_dir); 
+}
+
+function actionBrowserForward() {
+	let forward_dir = browser_history_forward.pop();
+	if (forward_dir == undefined) return;
+
+	//slice out trailing slash
+	let slice_dir = forward_dir.split("%2F");
+	slice_dir.pop();
+	forward_dir = slice_dir.join("%2F");
+
+	browser_history_back.push(current_dir);
+	obtainDirList(forward_dir); 
 }
 
 function volumeChange() {
@@ -371,8 +416,13 @@ function actionTrackClick(trno){
 	playerdom.play();
 }
 
+//*************************
 //event handlings
-//These are mostly event handlers, some of them are natural browser events, some of them are artifical events that needs to be triggered manually 
+//*************************
+//
+//These are mostly event handlers, 
+//some of them are natural browser events, 
+//some of them are artifical events that needs to be triggered manually 
 
 //Called on DOM loaded event
 function initPlayer() {
@@ -513,7 +563,7 @@ function updateElapsed() {
 		}
 	}
 	if (is_playing)
-		setTimeout(updateElapsed,50);
+		setTimeout(updateElapsed,500);
 }
 
 function updateCurrentTrack(){
@@ -566,6 +616,7 @@ function obtainPlaylistList() {
 				actions += "<option value=\""+ i + "\">" + playlist_list[i] + "</option>";
 			}
 			plselectdom.innerHTML = actions;
+			plselectdom.value = playlist_showing_no;
 
 			if(waiting_playlist_list){
 				plselectdom.value = playlist_list.length -1 ;
@@ -724,7 +775,7 @@ function obtainDirList(dirname) {
 			for (let i=0;i<dir_data.dir.length;i++){
 				name = decodeURIComponent(dir_data.dir[i].split("%2F").slice(-1)[0]);
 				playlist_html += '<div class="list_item">';
-				playlist_html += '<div class="list-item-name" style="color:lawngreen" onclick=obtainDirList(\"'+dir_data.dir[i]+'\") >';
+				playlist_html += '<div class="list-item-name" style="color:lawngreen" onclick=actionBrowserItemClick(\"'+dir_data.dir[i]+'\") >';
 				playlist_html += '&#x21b3; ' + name;
 				playlist_html += '</div>';
 				playlist_html += '</div>';

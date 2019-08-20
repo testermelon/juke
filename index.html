@@ -32,9 +32,9 @@
 
 			<div class="pane">
 				<button id="up-button" onclick=actionBrowserUp() class="playlist_button"></button>
-				<button id="back-button" onclick=actionBrowserUp() class="playlist_button"></button>
-				<button id="forward-button" onclick=actionBrowserUp() class="playlist_button"></button>
-				<button id="home-button" onclick=actionBrowserUp() class="playlist_button"></button>
+				<button id="back-button" onclick=actionBrowserBack() class="playlist_button"></button>
+				<button id="forward-button" onclick=actionBrowserForward() class="playlist_button"></button>
+				<button id="home-button" onclick=actionBrowserHome() class="playlist_button"></button>
 			</div>
 
 			<div class="pane">
@@ -81,7 +81,9 @@
 	<div class="bottom-pane">
 
 		<div class="control-line" >
-			<div id="track-name-text" style="flex:1; overflow: hidden;white-space:nowrap; text-overflow:ellipsis; color: khaki">Welcome to Fireberry Music Player!</div>
+			<div id="track-name-text" style="flex:1; overflow: hidden;white-space:nowrap; text-overflow:ellipsis; color: khaki">
+				Welcome to Fireberry Music Player!
+			</div>
 		</div>
 		<div class="control-line">
 				<button class="small_button" id="play-button" 
