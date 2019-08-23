@@ -344,7 +344,7 @@ function actionBrowserUp(){
 }
 
 function actionBrowserHome(){
-	obtainDirList(playlist_home); 
+	obtainDirList(encodeURIComponent(playlist_home)); 
 }
 
 function actionBrowserItemClick(dir) {
@@ -538,7 +538,6 @@ function playbackEnded() {
 			playerdom.play();
 		}
 	}
-	document.getElementById("play-button").innerHTML = "&gt";
 }
 
 function updateElapsed() {
