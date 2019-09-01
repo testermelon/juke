@@ -4,7 +4,7 @@
 //These needs to be prepared and reflected on the html (view) at init time
 
 //Home directory of music files
-let playlist_home = "../firedrives/Gentiana/Music";
+let playlist_home = "library";
 let playlist_list = []
 
 //This music player maintains two playlists:
@@ -337,13 +337,14 @@ function actionBrowserUp(){
 	//pop away the current dir so it became upper dir
 	slice_dir.pop();
 	slice_dir.pop();
-	//Prevent access to gentiana
-	if(slice_dir[slice_dir.length-1] == "Gentiana") return;
 	let updir = slice_dir.join("%2F");
+	//Prevent access to upper dir
+	if (updir == "") return;
 	obtainDirList(updir); 
 }
 
 function actionBrowserHome(){
+	if(current_dir == encodeURIComponent(playlist_home + "/")) return;
 	obtainDirList(encodeURIComponent(playlist_home)); 
 }
 
@@ -791,7 +792,7 @@ function obtainDirList(dirname) {
 			}
 			document.getElementById("filelist").innerHTML = playlist_html;
 			current_dir = dirname + "%2F";
-			document.getElementById("currentdir").innerHTML = "<option>" + decodeURIComponent(current_dir).replace('../firedrives/Gentiana/Music','') + "</option>";
+			document.getElementById("currentdir").innerHTML = "<option>" + decodeURIComponent(current_dir).replace(playlist_home,'') + "</option>";
 		}
 	}
 	xhttp.open("GET","getDirList.php?dir="+dirname,true);
@@ -844,6 +845,7 @@ function mediaListener(x) {
 		document.getElementById("playlist-pane").style.display = "block";
 		document.getElementById("browser-pane-title").style.display = "block";
 		document.getElementById("playlist-pane-title").style.display = "block";
+		document.getElementById("volume-slider").style.display = "inline-block";
 	}
 	else{
 		//smaller than xxx px wide
@@ -853,6 +855,7 @@ function mediaListener(x) {
 		document.getElementById("browser-pane-title").style.display = "none";
 		document.getElementById("playlist-pane-title").style.display = "none";
 		document.getElementById("pane-select-buttons").style.display = "flex";
+		document.getElementById("volume-slider").style.display = "none";
 
 		//set style for selected pane
 		document.getElementById("pane-select-playlist").style.color = "white";
