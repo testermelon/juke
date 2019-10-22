@@ -27,7 +27,6 @@ body {
 
 
 .top-pane {
-	flex:1;
 	top: 0;
 /*	margin-bottom: 100px;*/
 	max-width: 960px;
