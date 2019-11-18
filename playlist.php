@@ -144,12 +144,10 @@ switch($_GET['op']){
 	case 'sw' :
 		plSwapTrack($_GET['pl'],$_GET['tr']);
 		break;
-		/*
 	case 'init':
 		plInitializeData();
 		echo "OK";
 		break;
-		 */
 }
 
 ?>

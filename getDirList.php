@@ -1,7 +1,7 @@
 <?php
 $targetdir = rawurldecode($_GET['dir']);
 
-//handle bug regarding square brackets
+//handle bug regarding illegal characters 
 $targetdir = str_replace('[','\[',$targetdir);
 $targetdir = str_replace(']','\]',$targetdir);
 
