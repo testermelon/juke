@@ -795,7 +795,7 @@ function obtainDirList(dirname) {
 			document.getElementById("currentdir").innerHTML = "<option>" + decodeURIComponent(current_dir).replace(playlist_home,'') + "</option>";
 		}
 	}
-	xhttp.open("GET","getDirList.php?dir="+dirname,true);
+	xhttp.open("GET","browserls.php?dir="+dirname,true);
 	xhttp.send();
 }
 
